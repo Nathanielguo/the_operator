@@ -1,0 +1,2615 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Operator · Marketing × Product × Strategy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700;9..144,900&family=JetBrains+Mono:wght@300;400;500;600&family=Noto+Serif+SC:wght@300;400;500;600;700;900&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#0d0d0c;
+  --ink-soft:#1c1b18;
+  --paper:#f2ede2;
+  --paper-2:#e8e1d2;
+  --paper-3:#dcd3bf;
+  --rule:#1a1a1a;
+  --accent:#b8392a;
+  --accent-2:#0f3d30;
+  --gold:#9a702a;
+  --blue:#1f4068;
+  --muted:#5a544a;
+  --highlight:#fff2a3;
+  --grid: rgba(13,13,12,0.05);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{
+  background:var(--paper);color:var(--ink);
+  font-family:'Noto Sans SC','JetBrains Mono',sans-serif;line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+}
+body{
+  min-height:100vh;
+  background-image:
+    linear-gradient(var(--grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 56px 56px;
+}
+
+/* ============ TOP NAV ============ */
+.topnav{
+  position:sticky;top:0;z-index:100;background:var(--paper);
+  border-bottom:3px double var(--rule);
+  padding:14px 32px 0;
+}
+.topnav-row{
+  display:flex;justify-content:space-between;align-items:center;
+  padding-bottom:12px;border-bottom:1px solid var(--rule);
+}
+.brand{
+  display:flex;align-items:center;gap:14px;cursor:pointer;
+}
+.brand .mark{
+  width:36px;height:36px;background:var(--ink);color:var(--paper);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Fraunces',serif;font-weight:900;font-style:italic;font-size:22px;
+  border:1px solid var(--rule);
+}
+.brand .name{
+  font-family:'Fraunces',serif;font-weight:700;font-size:20px;letter-spacing:-0.01em;
+}
+.brand .name em{font-style:italic;color:var(--accent)}
+.brand .sub{
+  font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.2em;
+  text-transform:uppercase;color:var(--muted);margin-top:2px;
+}
+.nav-meta{
+  display:flex;gap:24px;align-items:center;
+  font-family:'JetBrains Mono',monospace;font-size:10px;
+  letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);
+}
+.nav-meta .live{display:flex;align-items:center;gap:6px}
+.nav-meta .dot{width:6px;height:6px;background:var(--accent);border-radius:50%;animation:pulse 2s infinite}
+@keyframes pulse{50%{opacity:0.3}}
+
+/* ============ MODEL SELECTOR ============ */
+.model-selector{position:relative}
+.ms-label{
+  font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:0.25em;
+  color:var(--muted);margin-bottom:3px;
+}
+.ms-display{
+  display:flex;align-items:center;gap:8px;cursor:pointer;
+  background:var(--ink);color:var(--paper);
+  padding:7px 12px;border:1px solid var(--rule);
+  font-family:'JetBrains Mono',monospace;font-size:11px;
+  letter-spacing:0.05em;text-transform:none;
+  transition:all 0.2s;min-width:200px;
+}
+.ms-display:hover{background:var(--accent-2)}
+.ms-dot{width:8px;height:8px;background:#7ec88d;border-radius:50%;display:inline-block;flex-shrink:0}
+.ms-dot.openai{background:#10a37f}
+.ms-dot.google{background:#4285f4}
+.ms-dot.anthropic{background:#cc785c}
+.ms-name{flex:1;font-weight:500}
+.ms-chev{font-size:10px;opacity:0.7}
+.ms-menu{
+  position:absolute;top:calc(100% + 6px);right:0;
+  background:var(--paper);border:1px solid var(--rule);
+  min-width:300px;z-index:200;
+  box-shadow:6px 6px 0 var(--rule);
+  display:none;max-height:70vh;overflow-y:auto;
+}
+.ms-menu.open{display:block}
+.ms-group{padding:8px 0;border-bottom:1px solid var(--rule)}
+.ms-group:last-of-type{border-bottom:none}
+.ms-group-label{
+  font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.25em;
+  text-transform:uppercase;color:var(--muted);padding:4px 14px 6px;font-weight:500;
+}
+.ms-option{
+  padding:9px 14px;cursor:pointer;transition:all 0.15s;
+}
+.ms-option:hover{background:var(--ink);color:var(--paper)}
+.ms-option:hover .ms-opt-meta{color:rgba(242,237,226,0.6)}
+.ms-option.active{background:var(--accent);color:var(--paper)}
+.ms-option.active .ms-opt-meta{color:rgba(242,237,226,0.7)}
+.ms-opt-name{
+  font-family:'Fraunces',serif;font-weight:500;font-size:14px;
+  letter-spacing:-0.005em;margin-bottom:2px;
+}
+.ms-opt-meta{
+  font-family:'JetBrains Mono',monospace;font-size:9.5px;
+  letter-spacing:0.05em;color:var(--muted);text-transform:none;
+}
+.ms-footer{
+  padding:10px 14px;font-family:'JetBrains Mono',monospace;font-size:8.5px;
+  letter-spacing:0.08em;color:var(--muted);
+  background:var(--paper-2);border-top:1px solid var(--rule);line-height:1.6;
+  text-transform:none;
+}
+
+/* Key manager button + badge */
+.ms-menu-head{padding:10px 12px;border-bottom:1px solid var(--rule);background:var(--paper-2)}
+.ms-key-btn{
+  width:100%;padding:8px 12px;border:1px solid var(--rule);background:var(--ink);color:var(--paper);
+  font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:0.15em;
+  text-transform:uppercase;cursor:pointer;transition:all 0.2s;
+}
+.ms-key-btn:hover{background:var(--accent);border-color:var(--accent)}
+.ms-key-badge{
+  margin-left:6px;font-family:'JetBrains Mono',monospace;font-size:11px;
+  color:var(--muted);font-weight:400;
+}
+.ms-key-badge.ok{color:#3a8552;font-weight:600}
+
+/* ============ MODAL ============ */
+.modal-overlay{
+  position:fixed;inset:0;background:rgba(13,13,12,0.55);
+  display:none;align-items:center;justify-content:center;
+  z-index:500;backdrop-filter:blur(3px);padding:20px;
+}
+.modal-overlay.open{display:flex;animation:fadeIn 0.2s}
+.modal{
+  background:var(--paper);border:1px solid var(--rule);
+  width:100%;max-width:760px;max-height:90vh;display:flex;flex-direction:column;
+  box-shadow:8px 8px 0 var(--rule);
+}
+.modal-head{
+  padding:24px 28px 18px;border-bottom:1px solid var(--rule);
+  display:flex;justify-content:space-between;align-items:flex-start;gap:18px;
+}
+.modal-eye{
+  font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:0.25em;
+  text-transform:uppercase;color:var(--accent);margin-bottom:8px;
+}
+.modal-h{
+  font-family:'Fraunces',serif;font-weight:700;font-size:30px;
+  letter-spacing:-0.02em;line-height:1;
+}
+.modal-h em{font-style:italic;color:var(--accent);font-weight:600}
+.modal-sub{
+  font-family:'Fraunces',serif;font-style:italic;font-weight:300;font-size:13px;
+  color:var(--muted);margin-top:8px;line-height:1.5;
+}
+.modal-close{
+  background:transparent;border:1px solid var(--rule);width:32px;height:32px;
+  cursor:pointer;font-size:14px;flex-shrink:0;transition:all 0.2s;
+}
+.modal-close:hover{background:var(--ink);color:var(--paper)}
+.modal-body{
+  flex:1;overflow-y:auto;padding:18px 28px;
+}
+.modal-body::-webkit-scrollbar{width:8px}
+.modal-body::-webkit-scrollbar-thumb{background:var(--rule)}
+.modal-foot{
+  padding:14px 28px;border-top:1px solid var(--rule);background:var(--paper-2);
+  display:flex;justify-content:space-between;align-items:center;gap:18px;
+}
+.modal-foot-note{
+  font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:0.05em;
+  color:var(--muted);line-height:1.6;flex:1;text-transform:none;
+}
+.modal-foot-note strong{color:var(--accent);font-weight:600}
+
+/* Key form rows */
+.key-row{
+  border:1px solid var(--rule);margin-bottom:12px;
+}
+.key-row-head{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:10px 14px;background:var(--paper-2);border-bottom:1px solid var(--rule);
+}
+.key-row-name{
+  font-family:'Fraunces',serif;font-weight:600;font-size:15px;
+  display:flex;align-items:center;gap:10px;
+}
+.key-row-dot{width:8px;height:8px;border-radius:50%;background:var(--muted)}
+.key-row-dot.ok{background:#3a8552}
+.key-row-models{
+  font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.1em;
+  color:var(--muted);text-transform:uppercase;
+}
+.key-row-body{padding:12px 14px;display:grid;grid-template-columns:1fr 1.5fr;gap:10px}
+@media (max-width:580px){.key-row-body{grid-template-columns:1fr}}
+.key-row-body label{margin-top:0}
+.key-row input{
+  font-family:'JetBrains Mono',monospace;font-size:11.5px;letter-spacing:0;
+  padding:8px 10px;
+}
+.key-row .docs{
+  font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.1em;
+  text-transform:uppercase;color:var(--accent);
+  text-decoration:none;margin-top:4px;display:inline-block;
+}
+.key-row .docs:hover{text-decoration:underline}
+
+/* ============ USAGE STRIP ============ */
+.usage-strip{
+  display:flex;align-items:center;gap:0;
+  background:var(--ink);color:var(--paper);
+  margin:0 -32px;padding:0 32px;
+  font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:0.15em;
+  text-transform:uppercase;border-top:1px solid rgba(242,237,226,0.1);
+}
+.us-item{
+  padding:8px 18px;display:flex;flex-direction:column;gap:2px;
+  border-right:1px solid rgba(242,237,226,0.12);
+}
+.us-item:last-child{border-right:none;margin-left:auto}
+.us-lbl{color:rgba(242,237,226,0.5);font-size:8.5px}
+.us-val{
+  font-family:'Fraunces',serif;font-weight:500;font-size:13px;
+  letter-spacing:-0.01em;color:var(--paper);
+}
+#us-cost{color:#f4c87a}
+.us-reset{
+  cursor:pointer;color:var(--accent);font-weight:500;letter-spacing:0.2em;
+  transition:all 0.2s;
+}
+.us-reset:hover{background:var(--accent);color:var(--paper)}
+
+.nav-tabs{
+  display:flex;gap:0;overflow-x:auto;scrollbar-width:none;
+}
+.nav-tabs::-webkit-scrollbar{display:none}
+.tab{
+  padding:14px 18px;cursor:pointer;
+  font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:0.15em;
+  text-transform:uppercase;color:var(--muted);
+  border-bottom:2px solid transparent;
+  transition:all 0.2s;white-space:nowrap;position:relative;
+}
+.tab:hover{color:var(--ink)}
+.tab.active{color:var(--ink);border-bottom-color:var(--accent);font-weight:500}
+.tab .num{
+  font-family:'Fraunces',serif;font-weight:700;font-size:9px;color:var(--accent);
+  margin-right:6px;
+}
+
+/* ============ MAIN ============ */
+main{padding:0 32px 60px;max-width:1480px;margin:0 auto}
+
+.page{display:none;animation:fadeIn 0.4s ease}
+.page.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+/* ============ HOME PAGE ============ */
+.hero{padding:60px 0 40px;border-bottom:1px solid var(--rule);position:relative}
+.hero-eye{
+  font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.25em;
+  text-transform:uppercase;color:var(--accent);margin-bottom:18px;
+}
+.hero-eye::before{content:"§ ";color:var(--muted)}
+.hero h1{
+  font-family:'Fraunces',serif;font-weight:900;
+  font-size:clamp(56px,9vw,128px);line-height:0.92;
+  letter-spacing:-0.035em;margin-bottom:24px;
+}
+.hero h1 em{font-style:italic;color:var(--accent);font-weight:700}
+.hero h1 .ampersand{font-family:'Fraunces',serif;font-style:italic;font-weight:300;color:var(--gold)}
+.hero-tag{
+  font-family:'Fraunces',serif;font-style:italic;font-weight:300;font-size:22px;
+  max-width:680px;color:var(--muted);line-height:1.4;margin-bottom:8px;
+}
+.hero-tag strong{color:var(--ink);font-weight:500;font-style:normal;background:var(--highlight);padding:0 6px}
+.hero-meta{
+  margin-top:36px;display:grid;grid-template-columns:repeat(4,1fr);gap:0;
+  border-top:1px solid var(--rule);padding-top:14px;
+}
+.hero-meta div{
+  font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.15em;
+  text-transform:uppercase;color:var(--muted);padding-right:14px;
+}
+.hero-meta strong{color:var(--ink);font-weight:500;display:block;margin-top:4px;font-size:12px;letter-spacing:0.05em}
+
+.module-grid{
+  margin-top:48px;display:grid;grid-template-columns:repeat(3,1fr);gap:14px;
+}
+@media (max-width:980px){.module-grid{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:640px){.module-grid{grid-template-columns:1fr}}
+
+.module-card{
+  border:1px solid var(--rule);background:var(--paper);
+  padding:22px;cursor:pointer;position:relative;
+  transition:all 0.3s ease;
+  min-height:200px;display:flex;flex-direction:column;
+}
+.module-card:hover{
+  background:var(--ink);color:var(--paper);
+  transform:translate(-3px,-3px);box-shadow:6px 6px 0 var(--rule);
+}
+.module-card:hover .mc-num{color:var(--accent)}
+.module-card:hover .mc-cat{color:rgba(242,237,226,0.5)}
+.module-card:hover .mc-arrow{transform:translateX(4px)}
+.mc-num{
+  font-family:'Fraunces',serif;font-weight:900;font-style:italic;font-size:36px;
+  color:var(--accent);line-height:1;margin-bottom:6px;
+  transition:color 0.3s;
+}
+.mc-cat{
+  font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.2em;
+  text-transform:uppercase;color:var(--muted);margin-bottom:14px;
+  transition:color 0.3s;
+}
+.mc-cat .pill{padding:2px 6px;background:var(--paper-2);margin-right:4px;border:1px solid var(--rule)}
+.mc-h{
+  font-family:'Fraunces',serif;font-weight:600;font-size:24px;
+  line-height:1.15;margin-bottom:8px;letter-spacing:-0.01em;
+}
+.mc-h em{font-style:italic;color:var(--accent)}
+.module-card:hover .mc-h em{color:var(--gold)}
+.mc-d{
+  font-size:12px;line-height:1.5;flex:1;opacity:0.85;
+}
+.mc-bottom{
+  margin-top:14px;padding-top:10px;border-top:1px dotted currentColor;
+  display:flex;justify-content:space-between;align-items:center;
+  font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:0.15em;
+  text-transform:uppercase;
+}
+.mc-arrow{transition:transform 0.3s;display:inline-block}
+
+.home-philosophy{
+  margin-top:60px;padding:48px 32px;border:1px solid var(--rule);
+  background:var(--ink);color:var(--paper);
+  display:grid;grid-template-columns:1fr 2fr;gap:40px;align-items:center;
+}
+@media (max-width:880px){.home-philosophy{grid-template-columns:1fr}}
+.home-philosophy .lbl{
+  font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.25em;
+  text-transform:uppercase;color:rgba(242,237,226,0.5);margin-bottom:8px;
+}
+.home-philosophy .quote{
+  font-family:'Fraunces',serif;font-style:italic;font-weight:300;
+  font-size:32px;line-height:1.25;letter-spacing:-0.01em;
+}
+.home-philosophy .quote em{color:var(--accent);font-weight:500}
+
+/* ============ FUNCTION PAGE COMMON ============ */
+.page-head{
+  padding:32px 0 24px;border-bottom:1px solid var(--rule);margin-bottom:24px;
+  display:flex;justify-content:space-between;align-items:flex-end;gap:30px;
+}
+.page-head .left{flex:1}
+.page-eye{
+  font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.25em;
+  text-transform:uppercase;color:var(--accent);margin-bottom:10px;
+}
+.page-head h2{
+  font-family:'Fraunces',serif;font-weight:700;font-size:clamp(36px,5vw,56px);
+  line-height:1;letter-spacing:-0.025em;
+}
+.page-head h2 em{font-style:italic;color:var(--accent);font-weight:600}
+.page-head .desc{
+  font-family:'Fraunces',serif;font-style:italic;font-weight:300;font-size:15px;
+  color:var(--muted);max-width:280px;text-align:right;line-height:1.5;
+}
+
+.workspace{
+  display:grid;grid-template-columns:1fr 1.2fr;gap:18px;
+}
+@media (max-width:1100px){.workspace{grid-template-columns:1fr}}
+
+/* ============ PANELS ============ */
+.panel{
+  border:1px solid var(--rule);background:var(--paper);
+  padding:20px;position:relative;
+}
+.panel-num{
+  position:absolute;top:-1px;left:-1px;
+  background:var(--ink);color:var(--paper);
+  font-family:'JetBrains Mono',monospace;font-size:9.5px;
+  padding:5px 10px;letter-spacing:0.15em;
+}
+.panel h3{
+  font-family:'Fraunces',serif;font-weight:600;font-size:18px;
+  margin:14px 0 4px;letter-spacing:-0.01em;
+}
+.panel h3 em{font-style:italic;color:var(--accent)}
+.panel .panel-sub{
+  font-family:'Fraunces',serif;font-style:italic;font-weight:300;font-size:12.5px;
+  color:var(--muted);margin-bottom:16px;border-bottom:1px dotted var(--rule);
+  padding-bottom:10px;
+}
+
+/* ============ FORMS ============ */
+label{
+  font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.2em;
+  text-transform:uppercase;color:var(--muted);
+  display:block;margin-bottom:6px;margin-top:14px;
+}
+label:first-child{margin-top:0}
+label .req{color:var(--accent)}
+input[type="text"], input[type="number"], textarea, select{
+  width:100%;padding:10px 12px;
+  font-family:'Noto Sans SC',sans-serif;font-size:13px;
+  background:var(--paper-2);border:1px solid var(--rule);
+  color:var(--ink);transition:all 0.2s;line-height:1.5;
+}
+textarea{min-height:80px;resize:vertical;font-family:'Noto Sans SC',sans-serif}
+input:focus, textarea:focus, select:focus{
+  outline:none;background:var(--paper);border-color:var(--accent);
+  box-shadow:0 0 0 3px rgba(184,57,42,0.1);
+}
+.row-2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.row-3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+
+/* Chips for multi-framework / option select */
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.chip{
+  padding:6px 12px;border:1px solid var(--rule);background:var(--paper);
+  font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.1em;
+  text-transform:uppercase;cursor:pointer;transition:all 0.2s;color:var(--ink);
+}
+.chip:hover{background:var(--paper-3)}
+.chip.active{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+
+/* Buttons */
+.btn{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:12px 18px;border:1px solid var(--rule);
+  background:var(--ink);color:var(--paper);
+  font-family:'JetBrains Mono',monospace;font-size:11px;
+  letter-spacing:0.18em;text-transform:uppercase;cursor:pointer;
+  transition:all 0.2s;font-weight:500;
+}
+.btn:hover{background:var(--accent);border-color:var(--accent)}
+.btn:disabled{opacity:0.5;cursor:not-allowed}
+.btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--rule)}
+.btn.ghost:hover{background:var(--paper-3);color:var(--ink)}
+.btn.full{width:100%;justify-content:center}
+.btn-row{display:flex;gap:8px;margin-top:16px;flex-wrap:wrap}
+
+/* ============ OUTPUT ============ */
+.output{
+  background:var(--paper-2);border:1px solid var(--rule);
+  padding:18px;min-height:200px;position:relative;
+  font-family:'Noto Sans SC',sans-serif;font-size:13.5px;line-height:1.75;
+  color:var(--ink);
+}
+.output.empty{
+  display:flex;align-items:center;justify-content:center;flex-direction:column;
+  color:var(--muted);text-align:center;min-height:240px;
+  background:repeating-linear-gradient(45deg,var(--paper-2),var(--paper-2) 12px,var(--paper) 12px,var(--paper) 13px);
+}
+.output.empty .ico{
+  font-family:'Fraunces',serif;font-style:italic;font-size:48px;font-weight:300;
+  color:var(--accent);margin-bottom:12px;
+}
+.output.empty .text{
+  font-family:'Fraunces',serif;font-style:italic;font-weight:300;font-size:15px;
+}
+.output h1, .output h2, .output h3, .output h4{
+  font-family:'Fraunces','Noto Serif SC',serif;font-weight:600;
+  margin:18px 0 8px;line-height:1.2;letter-spacing:-0.01em;
+}
+.output h1{font-size:24px}
+.output h2{font-size:20px;color:var(--accent-2);border-bottom:1px solid var(--rule);padding-bottom:6px}
+.output h3{font-size:16px;color:var(--accent)}
+.output h4{font-size:14px;font-style:italic}
+.output p{margin:8px 0}
+.output ul, .output ol{margin:8px 0 8px 22px}
+.output li{margin:4px 0}
+.output strong{font-weight:600;color:var(--accent-2)}
+.output em{font-style:italic;color:var(--gold)}
+.output code{
+  background:var(--paper);padding:1px 6px;border:1px solid var(--rule);
+  font-family:'JetBrains Mono',monospace;font-size:11.5px;
+}
+.output blockquote{
+  border-left:3px solid var(--accent);padding:6px 14px;margin:12px 0;
+  background:var(--paper);font-family:'Fraunces',serif;font-style:italic;
+}
+.output table{border-collapse:collapse;width:100%;margin:12px 0;font-size:12.5px}
+.output th, .output td{border:1px solid var(--rule);padding:8px 10px;text-align:left}
+.output th{background:var(--ink);color:var(--paper);font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:0.1em;text-transform:uppercase;font-weight:500}
+
+.output-head{
+  display:flex;justify-content:space-between;align-items:center;
+  margin-bottom:12px;padding-bottom:10px;border-bottom:1px solid var(--rule);
+}
+.output-label{
+  font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:0.2em;
+  text-transform:uppercase;color:var(--muted);
+}
+.output-actions{display:flex;gap:6px}
+.output-mini-btn{
+  padding:4px 10px;background:transparent;border:1px solid var(--rule);
+  font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.15em;
+  text-transform:uppercase;cursor:pointer;color:var(--muted);transition:all 0.2s;
+}
+.output-mini-btn:hover{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+
+/* ============ USAGE BAR (per-output) ============ */
+.usage-bar{
+  display:flex;align-items:stretch;gap:0;
+  background:var(--ink);color:var(--paper);
+  margin:0 -18px 14px;padding:0;
+  font-family:'JetBrains Mono',monospace;
+  border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);
+  flex-wrap:wrap;
+}
+.ub-item{
+  padding:7px 12px;display:flex;flex-direction:column;gap:1px;
+  border-right:1px solid rgba(242,237,226,0.12);flex:1;min-width:80px;
+}
+.ub-item:last-child{border-right:none}
+.ub-lbl{font-size:8px;letter-spacing:0.2em;color:rgba(242,237,226,0.5);text-transform:uppercase}
+.ub-val{
+  font-family:'Fraunces',serif;font-weight:500;font-size:13px;
+  letter-spacing:-0.005em;color:var(--paper);
+}
+.ub-cost{color:#f4c87a}
+.usage-bar.mini{
+  margin:0 0 8px;padding:5px 8px;display:block;
+  background:var(--paper-3);color:var(--muted);
+  border:1px dotted var(--rule);font-size:9.5px;letter-spacing:0.1em;
+  text-transform:uppercase;
+}
+.ub-mini{display:block}
+
+/* Loading */
+.loading{display:flex;align-items:center;gap:10px;color:var(--muted);font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.15em}
+.loading .dots{display:inline-block;width:24px}
+.loading .dots::after{content:"";animation:dots 1.4s infinite}
+@keyframes dots{0%,20%{content:"·"}40%{content:"··"}60%,100%{content:"···"}}
+
+/* Error */
+.err{background:#fce5e0;border:1px solid var(--accent);padding:10px 14px;color:var(--accent);font-size:12px;font-family:'JetBrains Mono',monospace;letter-spacing:0.05em}
+
+/* ============ INSIGHT LAB MULTI-COL ============ */
+.lab-cols{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:14px}
+@media (max-width:900px){.lab-cols{grid-template-columns:1fr}}
+.lab-col{
+  border:1px solid var(--rule);background:var(--paper);padding:14px;
+  display:flex;flex-direction:column;min-height:280px;
+}
+.lab-col-head{
+  display:flex;justify-content:space-between;align-items:center;
+  margin-bottom:8px;padding-bottom:8px;border-bottom:1px solid var(--rule);
+}
+.lab-col-name{
+  font-family:'Fraunces',serif;font-weight:600;font-style:italic;font-size:14px;
+}
+.lab-col-tag{
+  font-family:'JetBrains Mono',monospace;font-size:8.5px;letter-spacing:0.15em;
+  text-transform:uppercase;color:var(--paper);background:var(--accent);
+  padding:2px 6px;
+}
+.lab-col-out{flex:1;font-size:12px;line-height:1.65;color:var(--ink)}
+.lab-col-out h3, .lab-col-out h4{font-size:12.5px;margin:8px 0 4px;color:var(--accent-2)}
+.lab-col-out ul{margin-left:18px}
+.lab-col-out li{margin:3px 0}
+.lab-col-out p{margin:5px 0}
+
+/* ============ STATIC FRAMEWORKS DISPLAY (for Strategy) ============ */
+.frame-tabs{display:flex;gap:0;border-bottom:1px solid var(--rule);margin-bottom:14px}
+.frame-tab{
+  padding:10px 16px;cursor:pointer;
+  font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.15em;
+  text-transform:uppercase;color:var(--muted);
+  border-bottom:2px solid transparent;margin-bottom:-1px;
+}
+.frame-tab.active{color:var(--ink);border-bottom-color:var(--accent)}
+.frame-tab:hover{color:var(--ink)}
+
+/* History sidebar entries */
+.history-list{display:flex;flex-direction:column;gap:6px;max-height:280px;overflow-y:auto}
+.history-list::-webkit-scrollbar{width:6px}
+.history-list::-webkit-scrollbar-thumb{background:var(--rule)}
+.hist-item{
+  padding:8px 10px;border-left:3px solid var(--accent);
+  background:var(--paper-2);cursor:pointer;font-size:11px;
+  transition:all 0.2s;
+}
+.hist-item:hover{background:var(--ink);color:var(--paper)}
+.hist-item .ts{
+  font-family:'JetBrains Mono',monospace;font-size:8.5px;letter-spacing:0.15em;
+  text-transform:uppercase;color:var(--muted);margin-bottom:2px;
+}
+.hist-item:hover .ts{color:rgba(242,237,226,0.5)}
+.hist-item .preview{line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+
+/* Quick prompts row */
+.quick-row{
+  display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;
+}
+.quick-prompt{
+  padding:6px 12px;background:var(--paper-2);border:1px solid var(--rule);
+  font-size:11px;cursor:pointer;transition:all 0.2s;color:var(--ink);
+}
+.quick-prompt:hover{background:var(--ink);color:var(--paper)}
+
+.kbd{
+  display:inline-block;padding:1px 6px;background:var(--paper-3);
+  border:1px solid var(--rule);font-family:'JetBrains Mono',monospace;
+  font-size:10px;border-radius:2px;
+}
+
+.footer{
+  margin-top:60px;padding-top:20px;border-top:3px double var(--rule);
+  display:flex;justify-content:space-between;align-items:center;
+  font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.15em;
+  text-transform:uppercase;color:var(--muted);
+}
+.footer .o{font-family:'Fraunces',serif;font-style:italic;font-size:14px;color:var(--accent)}
+
+/* ============ SIGNATURE BLOCK ============ */
+.signature{
+  margin-top:32px;padding:0 0 40px;
+}
+.sig-rule{
+  height:1px;background:var(--rule);position:relative;margin-bottom:24px;
+}
+.sig-rule::before, .sig-rule::after{
+  content:"◆";position:absolute;top:-7px;
+  font-family:'Fraunces',serif;font-size:12px;color:var(--accent);
+  background:var(--paper);padding:0 8px;
+}
+.sig-rule::before{left:50%;transform:translateX(-50%)}
+.sig-rule::after{display:none}
+.sig-content{
+  display:grid;grid-template-columns:1fr auto 1fr;gap:32px;align-items:center;
+  padding:0 8px;
+}
+@media (max-width:780px){
+  .sig-content{grid-template-columns:1fr;text-align:center;gap:18px}
+  .sig-content .sig-right{text-align:center}
+}
+.sig-mono{
+  font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.25em;
+  text-transform:uppercase;color:var(--muted);margin-bottom:8px;
+}
+.sig-name{
+  font-family:'Fraunces','Noto Serif SC',serif;font-weight:600;font-size:24px;
+  letter-spacing:-0.01em;color:var(--ink);line-height:1.2;
+}
+.sig-en{
+  font-style:italic;font-weight:400;color:var(--accent);font-size:18px;
+  margin-left:6px;letter-spacing:0.02em;
+}
+.sig-mid{display:flex;justify-content:center;align-items:center}
+.sig-ornament{
+  font-family:'Fraunces',serif;font-style:italic;font-size:18px;
+  color:var(--gold);letter-spacing:0.4em;
+}
+.sig-right{text-align:right}
+.sig-copy{
+  font-family:'Fraunces',serif;font-weight:500;font-size:13px;
+  color:var(--ink);margin-bottom:6px;letter-spacing:0.01em;
+}
+.sig-fine{
+  font-family:'Fraunces',serif;font-style:italic;font-weight:300;font-size:11px;
+  color:var(--muted);line-height:1.5;max-width:320px;margin-left:auto;
+}
+@media (max-width:780px){.sig-fine{margin:0 auto}}
+
+</style>
+</head>
+<body>
+
+<!-- ============ TOP NAV ============ -->
+<nav class="topnav">
+  <div class="topnav-row">
+    <div class="brand" onclick="goPage('home')">
+      <div class="mark">O</div>
+      <div>
+        <div class="name">The <em>Operator</em></div>
+        <div class="sub">A Workbench for Marketing × Product × Strategy</div>
+      </div>
+    </div>
+    <div class="nav-meta">
+      <div class="model-selector" id="model-selector">
+        <div class="ms-label">MODEL</div>
+        <div class="ms-display" onclick="toggleModelMenu()">
+          <span class="ms-dot" id="ms-dot"></span>
+          <span class="ms-name" id="ms-name">Claude Sonnet 4.6</span>
+          <span class="ms-chev">▾</span>
+        </div>
+        <div class="ms-menu" id="ms-menu">
+          <div class="ms-menu-head">
+            <button class="ms-key-btn" onclick="openKeyManager()">⚙ 管理 API Keys</button>
+          </div>
+          <div class="ms-group">
+            <div class="ms-group-label">Anthropic <span class="ms-key-badge" data-prov="anthropic">○</span></div>
+            <div class="ms-option" data-model="claude-opus-4-7">
+              <div class="ms-opt-name">Claude Opus 4.7</div>
+              <div class="ms-opt-meta">$15/$75 · 1M ctx · 最强推理</div>
+            </div>
+            <div class="ms-option" data-model="claude-sonnet-4-6">
+              <div class="ms-opt-name">Claude Sonnet 4.6</div>
+              <div class="ms-opt-meta">$3/$15 · 1M ctx · 日常旗舰</div>
+            </div>
+            <div class="ms-option" data-model="claude-haiku-4-5">
+              <div class="ms-opt-name">Claude Haiku 4.5</div>
+              <div class="ms-opt-meta">$1/$5 · 200K · 快速轻量</div>
+            </div>
+          </div>
+          <div class="ms-group">
+            <div class="ms-group-label">OpenAI <span class="ms-key-badge" data-prov="openai">○</span></div>
+            <div class="ms-option" data-model="gpt-5.5">
+              <div class="ms-opt-name">GPT-5.5</div>
+              <div class="ms-opt-meta">$5/$30 · 1M · 最新旗舰</div>
+            </div>
+            <div class="ms-option" data-model="gpt-5.5-pro">
+              <div class="ms-opt-name">GPT-5.5 Pro</div>
+              <div class="ms-opt-meta">$30/$180 · 最高精度</div>
+            </div>
+            <div class="ms-option" data-model="gpt-5.4">
+              <div class="ms-opt-name">GPT-5.4</div>
+              <div class="ms-opt-meta">$2.5/$15 · 前代旗舰</div>
+            </div>
+          </div>
+          <div class="ms-group">
+            <div class="ms-group-label">Google <span class="ms-key-badge" data-prov="google">○</span></div>
+            <div class="ms-option" data-model="gemini-3.1-pro">
+              <div class="ms-opt-name">Gemini 3.1 Pro</div>
+              <div class="ms-opt-meta">$2/$12 · 1M · 最高性价比</div>
+            </div>
+            <div class="ms-option" data-model="gemini-3-flash">
+              <div class="ms-opt-name">Gemini 3 Flash</div>
+              <div class="ms-opt-meta">$0.3/$2.5 · 高速低价</div>
+            </div>
+          </div>
+          <div class="ms-group">
+            <div class="ms-group-label">DeepSeek <span class="ms-key-badge" data-prov="deepseek">○</span></div>
+            <div class="ms-option" data-model="deepseek-v4-pro">
+              <div class="ms-opt-name">DeepSeek V4 Pro</div>
+              <div class="ms-opt-meta">$0.44/$0.87 · 深度推理</div>
+            </div>
+            <div class="ms-option" data-model="deepseek-v4-flash">
+              <div class="ms-opt-name">DeepSeek V4 Flash</div>
+              <div class="ms-opt-meta">$0.14/$0.28 · 极致性价比</div>
+            </div>
+            <div class="ms-option" data-model="deepseek-chat">
+              <div class="ms-opt-name">DeepSeek Chat (V3.2)</div>
+              <div class="ms-opt-meta">$0.28/$0.42 · 稳定快速</div>
+            </div>
+            <div class="ms-option" data-model="deepseek-reasoner">
+              <div class="ms-opt-name">DeepSeek Reasoner</div>
+              <div class="ms-opt-meta">$0.28/$0.42 · 思考链</div>
+            </div>
+          </div>
+          <div class="ms-group">
+            <div class="ms-group-label">阿里 通义千问 <span class="ms-key-badge" data-prov="qwen">○</span></div>
+            <div class="ms-option" data-model="qwen3-max">
+              <div class="ms-opt-name">通义 Qwen3-Max</div>
+              <div class="ms-opt-meta">¥2.5/¥10 · 256K · 阿里旗舰</div>
+            </div>
+            <div class="ms-option" data-model="qwen3.5-plus">
+              <div class="ms-opt-name">通义 Qwen3.5-Plus</div>
+              <div class="ms-opt-meta">¥0.8/¥3 · 1M · 开源SOTA</div>
+            </div>
+            <div class="ms-option" data-model="qwen-plus">
+              <div class="ms-opt-name">通义 Qwen-Plus</div>
+              <div class="ms-opt-meta">¥0.8/¥2 · 1M · 主力均衡</div>
+            </div>
+            <div class="ms-option" data-model="qwen-flash">
+              <div class="ms-opt-name">通义 Qwen-Flash</div>
+              <div class="ms-opt-meta">¥0.3/¥0.8 · 1M · 极速低价</div>
+            </div>
+          </div>
+          <div class="ms-group">
+            <div class="ms-group-label">月之暗面 Kimi <span class="ms-key-badge" data-prov="moonshot">○</span></div>
+            <div class="ms-option" data-model="kimi-k2.6">
+              <div class="ms-opt-name">Kimi K2.6</div>
+              <div class="ms-opt-meta">¥6/¥27 · 256K · 最新最强</div>
+            </div>
+            <div class="ms-option" data-model="kimi-k2.5">
+              <div class="ms-opt-name">Kimi K2.5</div>
+              <div class="ms-opt-meta">¥4/¥21 · 开源SOTA</div>
+            </div>
+            <div class="ms-option" data-model="kimi-k2-thinking">
+              <div class="ms-opt-name">Kimi K2 Thinking</div>
+              <div class="ms-opt-meta">¥4/¥21 · 深度思考</div>
+            </div>
+          </div>
+          <div class="ms-group">
+            <div class="ms-group-label">智谱 GLM <span class="ms-key-badge" data-prov="zhipu">○</span></div>
+            <div class="ms-option" data-model="glm-4.7">
+              <div class="ms-opt-name">GLM-4.7</div>
+              <div class="ms-opt-meta">¥2/¥8 · 编码增强</div>
+            </div>
+            <div class="ms-option" data-model="glm-4.6">
+              <div class="ms-opt-name">GLM-4.6</div>
+              <div class="ms-opt-meta">¥1.5/¥6 · 通用旗舰</div>
+            </div>
+            <div class="ms-option" data-model="glm-4.5-air">
+              <div class="ms-opt-name">GLM-4.5-Air</div>
+              <div class="ms-opt-meta">¥0.2/¥1 · 轻量极速</div>
+            </div>
+          </div>
+          <div class="ms-group">
+            <div class="ms-group-label">字节 豆包 <span class="ms-key-badge" data-prov="doubao">○</span></div>
+            <div class="ms-option" data-model="doubao-seed-2.0-pro">
+              <div class="ms-opt-name">豆包 Doubao-Seed-2.0 Pro</div>
+              <div class="ms-opt-meta">¥0.8/¥3 · 256K · 字节旗舰</div>
+            </div>
+            <div class="ms-option" data-model="doubao-seed-1.6">
+              <div class="ms-opt-name">豆包 Doubao-Seed-1.6</div>
+              <div class="ms-opt-meta">¥0.8/¥2 · 通用强化</div>
+            </div>
+          </div>
+          <div class="ms-group">
+            <div class="ms-group-label">MiniMax <span class="ms-key-badge" data-prov="minimax">○</span></div>
+            <div class="ms-option" data-model="minimax-m2.5">
+              <div class="ms-opt-name">MiniMax M2.5</div>
+              <div class="ms-opt-meta">¥1/¥4 · 1M · 极速Agent</div>
+            </div>
+          </div>
+          <div class="ms-footer">
+            * 价格统一换算为 USD per 1M tokens(input/output)<br>
+            * 国内模型显示对应 CNY 等价(以汇率 7.2)<br>
+            * Key 仅保存在你的浏览器 localStorage,不会上传
+          </div>
+        </div>
+      </div>
+      <span class="live"><span class="dot"></span> <span id="live-text">未配置 Key</span></span>
+      <span id="datetime">—</span>
+    </div>
+  </div>
+  <div class="nav-tabs">
+    <div class="tab active" data-page="home"><span class="num">00</span>Home</div>
+    <div class="tab" data-page="strategy"><span class="num">01</span>Strategy Canvas</div>
+    <div class="tab" data-page="intel"><span class="num">02</span>Competitive Intel</div>
+    <div class="tab" data-page="brand"><span class="num">03</span>Brand Architect</div>
+    <div class="tab" data-page="copy"><span class="num">04</span>Copy Studio</div>
+    <div class="tab" data-page="campaign"><span class="num">05</span>Campaign Planner</div>
+    <div class="tab" data-page="discovery"><span class="num">06</span>Product Discovery</div>
+    <div class="tab" data-page="prd"><span class="num">07</span>PRD Drafter</div>
+    <div class="tab" data-page="roadmap"><span class="num">08</span>Roadmap & Prioritize</div>
+    <div class="tab" data-page="lab"><span class="num">09</span>Insight Lab</div>
+  </div>
+  <!-- Session usage strip -->
+  <div class="usage-strip">
+    <div class="us-item"><span class="us-lbl">Session</span><span class="us-val" id="us-calls">0 calls</span></div>
+    <div class="us-item"><span class="us-lbl">Input</span><span class="us-val" id="us-input">0 tok</span></div>
+    <div class="us-item"><span class="us-lbl">Output</span><span class="us-val" id="us-output">0 tok</span></div>
+    <div class="us-item"><span class="us-lbl">Total</span><span class="us-val" id="us-total">0 tok</span></div>
+    <div class="us-item"><span class="us-lbl">Cost</span><span class="us-val" id="us-cost">$0.0000</span></div>
+    <div class="us-item us-reset" onclick="resetSession()">⟳ RESET</div>
+  </div>
+</nav>
+
+<!-- ============ API KEY MANAGER MODAL ============ -->
+<div class="modal-overlay" id="key-modal" onclick="closeKeyManager(event)">
+  <div class="modal" onclick="event.stopPropagation()">
+    <div class="modal-head">
+      <div>
+        <div class="modal-eye">§ Configuration</div>
+        <h2 class="modal-h">API <em>Keys</em> · 自配密钥</h2>
+        <div class="modal-sub">所有密钥仅保存在你的浏览器本地 (localStorage),不上传任何服务器。可随时清除。</div>
+      </div>
+      <button class="modal-close" onclick="closeKeyManager()">✕</button>
+    </div>
+    <div class="modal-body" id="key-modal-body"><!-- populated by JS --></div>
+    <div class="modal-foot">
+      <div class="modal-foot-note">
+        <strong>提示:</strong> 浏览器直接调用 API 可能因 CORS 被阻止 — 部分厂商(尤其是国内)需要在自有后端代理转发。Anthropic、DeepSeek、Moonshot、阿里百炼通常支持浏览器直连。
+      </div>
+      <div>
+        <button class="btn ghost" onclick="clearAllKeys()">清空所有</button>
+        <button class="btn" onclick="saveAllKeys()">保存并关闭</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ HOME ============ -->
+<section class="page active" id="page-home">
+  <div class="hero">
+    <div class="hero-eye">An Operator's Workbench · Edition №.001</div>
+    <h1>Think <em>Sharper</em>.<br>Build <em>Faster</em>.<br><span class="ampersand">&</span> Ship <em>Better</em>.</h1>
+    <div class="hero-tag">A workbench for the people who turn <strong>ambiguity</strong> into <strong>strategy</strong>, and strategy into <strong>shipped work</strong>. Nine instruments, one model, zero ceremony.</div>
+    <div class="hero-meta">
+      <div>DOMAINS<strong>Marketing · Product · Strategy</strong></div>
+      <div>FRAMEWORKS<strong>STP · 4P · JTBD · Porter · BCG · RICE</strong></div>
+      <div>POWERED BY<strong id="hero-model">Claude Sonnet 4.6</strong></div>
+      <div>API MODE<strong>Bring Your Own Keys · 本地保存</strong></div>
+    </div>
+  </div>
+
+  <div class="module-grid">
+
+    <div class="module-card" onclick="goPage('strategy')">
+      <div class="mc-num">01</div>
+      <div class="mc-cat"><span class="pill">Strategy</span></div>
+      <div class="mc-h">Strategy <em>Canvas</em></div>
+      <div class="mc-d">把模糊问题装进经典框架 — STP、4P、Porter Five Forces、BCG、Ansoff，一键生成战略画布。</div>
+      <div class="mc-bottom"><span>开始 · Begin</span><span class="mc-arrow">→</span></div>
+    </div>
+
+    <div class="module-card" onclick="goPage('intel')">
+      <div class="mc-num">02</div>
+      <div class="mc-cat"><span class="pill">Strategy</span></div>
+      <div class="mc-h">Competitive <em>Intel</em></div>
+      <div class="mc-d">竞品对标、SWOT交叉分析、定位地图与差距诊断 — 找到对手没看见的白空间。</div>
+      <div class="mc-bottom"><span>开始 · Begin</span><span class="mc-arrow">→</span></div>
+    </div>
+
+    <div class="module-card" onclick="goPage('brand')">
+      <div class="mc-num">03</div>
+      <div class="mc-cat"><span class="pill">Marketing</span></div>
+      <div class="mc-h">Brand <em>Architect</em></div>
+      <div class="mc-d">从品牌金字塔到 Tone of Voice — 把抽象的品牌感觉变成可执行的语言系统。</div>
+      <div class="mc-bottom"><span>开始 · Begin</span><span class="mc-arrow">→</span></div>
+    </div>
+
+    <div class="module-card" onclick="goPage('copy')">
+      <div class="mc-num">04</div>
+      <div class="mc-cat"><span class="pill">Marketing</span></div>
+      <div class="mc-h">Copy <em>Studio</em></div>
+      <div class="mc-d">Slogan、Headlines、Campaign Idea、社媒文案 — 多版本并行,一稿多控,反推迭代。</div>
+      <div class="mc-bottom"><span>开始 · Begin</span><span class="mc-arrow">→</span></div>
+    </div>
+
+    <div class="module-card" onclick="goPage('campaign')">
+      <div class="mc-num">05</div>
+      <div class="mc-cat"><span class="pill">Marketing</span></div>
+      <div class="mc-h">Campaign <em>Planner</em></div>
+      <div class="mc-d">一份 brief → 完整Campaign方案 :目标 · 受众 · 信息 · 渠道组合 · 预算 · KPI。</div>
+      <div class="mc-bottom"><span>开始 · Begin</span><span class="mc-arrow">→</span></div>
+    </div>
+
+    <div class="module-card" onclick="goPage('discovery')">
+      <div class="mc-num">06</div>
+      <div class="mc-cat"><span class="pill">Product</span></div>
+      <div class="mc-h">Product <em>Discovery</em></div>
+      <div class="mc-d">用户访谈摘要、JTBD建模、痛点提炼、机会陈述 — 让Insight可被复用而非埋在文档里。</div>
+      <div class="mc-bottom"><span>开始 · Begin</span><span class="mc-arrow">→</span></div>
+    </div>
+
+    <div class="module-card" onclick="goPage('prd')">
+      <div class="mc-num">07</div>
+      <div class="mc-cat"><span class="pill">Product</span></div>
+      <div class="mc-h">PRD <em>Drafter</em></div>
+      <div class="mc-d">从一句话需求到结构化 PRD: 背景 · 目标 · 用户故事 · 验收标准 · 风险与边界。</div>
+      <div class="mc-bottom"><span>开始 · Begin</span><span class="mc-arrow">→</span></div>
+    </div>
+
+    <div class="module-card" onclick="goPage('roadmap')">
+      <div class="mc-num">08</div>
+      <div class="mc-cat"><span class="pill">Product</span></div>
+      <div class="mc-h">Roadmap &amp; <em>Prioritize</em></div>
+      <div class="mc-d">RICE · ICE · MoSCoW · Kano · Weighted Shortest Job First — 给需求一个有理由的顺序。</div>
+      <div class="mc-bottom"><span>开始 · Begin</span><span class="mc-arrow">→</span></div>
+    </div>
+
+    <div class="module-card" onclick="goPage('lab')">
+      <div class="mc-num">09</div>
+      <div class="mc-cat"><span class="pill">Cross</span></div>
+      <div class="mc-h">Insight <em>Lab</em></div>
+      <div class="mc-d">同一个问题,三种思维模型并行 — Strategist · Marketer · Product Manager 三视角同框对照。</div>
+      <div class="mc-bottom"><span>开始 · Begin</span><span class="mc-arrow">→</span></div>
+    </div>
+
+  </div>
+
+  <div class="home-philosophy">
+    <div>
+      <div class="lbl">— Operator's Creed</div>
+    </div>
+    <div class="quote">
+      "Frameworks don't make decisions. <em>People do.</em><br>
+      But the right frame, applied at the right moment, makes a smart person look like a genius — and a tired team move like a fresh one."
+    </div>
+  </div>
+</section>
+
+<!-- ============ 1. STRATEGY CANVAS ============ -->
+<section class="page" id="page-strategy">
+  <div class="page-head">
+    <div class="left">
+      <div class="page-eye">№.01 · Strategy Module</div>
+      <h2>Strategy <em>Canvas</em></h2>
+    </div>
+    <div class="desc">Pick a framework. Describe your context. Get a structured strategic canvas.</div>
+  </div>
+
+  <div class="frame-tabs" id="frame-tabs">
+    <div class="frame-tab active" data-frame="STP">STP分析</div>
+    <div class="frame-tab" data-frame="4P">4P营销组合</div>
+    <div class="frame-tab" data-frame="Porter">Porter 五力</div>
+    <div class="frame-tab" data-frame="BCG">BCG矩阵</div>
+    <div class="frame-tab" data-frame="Ansoff">Ansoff增长矩阵</div>
+    <div class="frame-tab" data-frame="SWOT">SWOT交叉</div>
+  </div>
+
+  <div class="workspace">
+    <div class="panel">
+      <div class="panel-num">INPUT</div>
+      <h3>填入你的<em>商业背景</em></h3>
+      <div class="panel-sub">越具体,框架越准。可只填核心问题。</div>
+
+      <label>公司 / 产品 / 业务名称</label>
+      <input type="text" id="strategy-name" placeholder="如：某SaaS协作工具 / 一款新能源车型 / 一家咖啡连锁">
+
+      <label>行业 & 市场</label>
+      <input type="text" id="strategy-industry" placeholder="如：B2B SaaS / 大众消费品 / 医疗器械">
+
+      <label>当前核心问题或决策点 <span class="req">*</span></label>
+      <textarea id="strategy-issue" placeholder="如：明年要进入下沉市场,但不确定主打什么产品线、什么价格带、走什么渠道。"></textarea>
+
+      <label>额外背景（可选）</label>
+      <textarea id="strategy-context" placeholder="竞争格局、自身优劣势、团队/预算约束……"></textarea>
+
+      <div class="quick-row">
+        <div class="quick-prompt" onclick="quickFillStrategy('saas')">示例：SaaS增长困局</div>
+        <div class="quick-prompt" onclick="quickFillStrategy('consumer')">示例：消费品定价</div>
+        <div class="quick-prompt" onclick="quickFillStrategy('b2b')">示例：B2B出海</div>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn" onclick="runStrategy()">▸ 生成战略画布</button>
+        <button class="btn ghost" onclick="resetForm('strategy')">清空</button>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-num">OUTPUT</div>
+      <h3>战略<em>画布</em></h3>
+      <div class="panel-sub">由 Claude 生成 · 可复制 · 可重新生成</div>
+      <div class="output empty" id="strategy-output">
+        <div class="ico">§</div>
+        <div class="text">填写左侧背景后点击生成 ——<br>AI 将依照所选框架为你完成画布。</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 2. COMPETITIVE INTEL ============ -->
+<section class="page" id="page-intel">
+  <div class="page-head">
+    <div class="left">
+      <div class="page-eye">№.02 · Strategy Module</div>
+      <h2>Competitive <em>Intel</em></h2>
+    </div>
+    <div class="desc">Who's in the ring. Where you stand. What space is unclaimed.</div>
+  </div>
+
+  <div class="workspace">
+    <div class="panel">
+      <div class="panel-num">INPUT</div>
+      <h3>定义<em>战场</em></h3>
+      <div class="panel-sub">列出主要竞争者,描述市场格局。</div>
+
+      <label>你的产品/品牌</label>
+      <input type="text" id="intel-self" placeholder="例如：Notion / 你的品牌名">
+
+      <label>主要竞争者（用逗号或换行分隔）<span class="req">*</span></label>
+      <textarea id="intel-rivals" placeholder="例如：Coda, Airtable, Confluence, ClickUp"></textarea>
+
+      <label>关注维度（多选）</label>
+      <div class="chips" id="intel-dims">
+        <div class="chip active" data-v="定位">定位</div>
+        <div class="chip active" data-v="定价">定价</div>
+        <div class="chip active" data-v="目标用户">目标用户</div>
+        <div class="chip" data-v="渠道">渠道</div>
+        <div class="chip" data-v="产品功能">产品功能</div>
+        <div class="chip" data-v="品牌调性">品牌调性</div>
+        <div class="chip active" data-v="差异化机会">差异化机会</div>
+      </div>
+
+      <label>分析输出形式</label>
+      <select id="intel-form">
+        <option value="对标表格">对标表格 + 总结</option>
+        <option value="SWOT交叉">SWOT交叉分析（自身视角）</option>
+        <option value="定位地图">定位地图 + 白空间识别</option>
+        <option value="完整报告">完整竞品报告（含建议）</option>
+      </select>
+
+      <label>额外信息（可选）</label>
+      <textarea id="intel-extra" placeholder="你已知的差异点、客户反馈、近期动向……"></textarea>
+
+      <div class="btn-row">
+        <button class="btn" onclick="runIntel()">▸ 生成竞品分析</button>
+        <button class="btn ghost" onclick="resetForm('intel')">清空</button>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-num">OUTPUT</div>
+      <h3>情报<em>报告</em></h3>
+      <div class="panel-sub">基于公开认知与你提供的输入。</div>
+      <div class="output empty" id="intel-output">
+        <div class="ico">§</div>
+        <div class="text">列出对手 → 选择维度 →<br>AI 输出表格 / SWOT / 定位地图 / 报告。</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 3. BRAND ARCHITECT ============ -->
+<section class="page" id="page-brand">
+  <div class="page-head">
+    <div class="left">
+      <div class="page-eye">№.03 · Marketing Module</div>
+      <h2>Brand <em>Architect</em></h2>
+    </div>
+    <div class="desc">From abstract feeling to a system you can write, design, and ship against.</div>
+  </div>
+
+  <div class="workspace">
+    <div class="panel">
+      <div class="panel-num">INPUT</div>
+      <h3>品牌<em>原料</em></h3>
+      <div class="panel-sub">不必完美 — 越粗糙的输入,越能看出AI梳理的价值。</div>
+
+      <label>品牌 / 产品名 <span class="req">*</span></label>
+      <input type="text" id="brand-name" placeholder="如：Loom / 你的品牌">
+
+      <label>它做什么、为谁做？</label>
+      <textarea id="brand-what" placeholder="一句话：我们为___提供___,解决___问题。"></textarea>
+
+      <label>当前的"感觉"（关键词或形容词）</label>
+      <input type="text" id="brand-feel" placeholder="如：理性、克制、专业；或：温暖、玩味、像朋友">
+
+      <label>需要输出的内容（多选）</label>
+      <div class="chips" id="brand-outputs">
+        <div class="chip active" data-v="定位声明">定位声明</div>
+        <div class="chip active" data-v="品牌金字塔">品牌金字塔</div>
+        <div class="chip active" data-v="Tone of Voice">Tone of Voice</div>
+        <div class="chip" data-v="价值主张">价值主张</div>
+        <div class="chip" data-v="品牌故事">品牌故事</div>
+        <div class="chip" data-v="禁忌词清单">禁忌词清单</div>
+        <div class="chip" data-v="品牌人格">品牌人格</div>
+      </div>
+
+      <label>不希望被联想到的（可选）</label>
+      <input type="text" id="brand-avoid" placeholder="如：廉价感、夸张、过度技术化……">
+
+      <div class="btn-row">
+        <button class="btn" onclick="runBrand()">▸ 构建品牌系统</button>
+        <button class="btn ghost" onclick="resetForm('brand')">清空</button>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-num">OUTPUT</div>
+      <h3>品牌<em>系统</em></h3>
+      <div class="panel-sub">可拷给设计、文案、产品的统一对齐稿。</div>
+      <div class="output empty" id="brand-output">
+        <div class="ico">§</div>
+        <div class="text">告诉我品牌名与"感觉" ——<br>我把它翻译为可执行的系统。</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 4. COPY STUDIO ============ -->
+<section class="page" id="page-copy">
+  <div class="page-head">
+    <div class="left">
+      <div class="page-eye">№.04 · Marketing Module</div>
+      <h2>Copy <em>Studio</em></h2>
+    </div>
+    <div class="desc">Multiple drafts, multiple angles. Steal what works, kill what doesn't.</div>
+  </div>
+
+  <div class="workspace">
+    <div class="panel">
+      <div class="panel-num">INPUT</div>
+      <h3>文案<em>简报</em></h3>
+      <div class="panel-sub">Brief 越准,文案越准。</div>
+
+      <label>文案类型</label>
+      <select id="copy-type">
+        <option>Slogan / 品牌口号</option>
+        <option>Tagline / 产品标语</option>
+        <option>Headlines / Landing Page 标题</option>
+        <option>社交媒体短文（小红书风）</option>
+        <option>社交媒体短文（X/Twitter风）</option>
+        <option>邮件主题行 + 开头</option>
+        <option>产品介绍段（80~150字）</option>
+        <option>Campaign Big Idea</option>
+        <option>广告脚本（15s/30s）</option>
+      </select>
+
+      <label>产品 / 主题 <span class="req">*</span></label>
+      <input type="text" id="copy-subject" placeholder="如：一款主打专注力的番茄钟App">
+
+      <label>核心利益点（一句话）</label>
+      <textarea id="copy-benefit" placeholder="如：让你不再因为社交媒体而失去整段时间。"></textarea>
+
+      <label>受众</label>
+      <input type="text" id="copy-audience" placeholder="如：25-35岁知识工作者">
+
+      <div class="row-2">
+        <div>
+          <label>调性</label>
+          <select id="copy-tone">
+            <option>克制理性</option>
+            <option>温暖治愈</option>
+            <option>幽默自嘲</option>
+            <option>叛逆挑衅</option>
+            <option>诗意文学</option>
+            <option>专业权威</option>
+            <option>朋友口吻</option>
+          </select>
+        </div>
+        <div>
+          <label>版本数量</label>
+          <select id="copy-count">
+            <option>3</option>
+            <option selected>5</option>
+            <option>8</option>
+            <option>10</option>
+          </select>
+        </div>
+      </div>
+
+      <label>禁用词或方向（可选）</label>
+      <input type="text" id="copy-avoid" placeholder="如：避免"赋能/极致/打造"">
+
+      <div class="btn-row">
+        <button class="btn" onclick="runCopy()">▸ 生成多版本</button>
+        <button class="btn ghost" onclick="resetForm('copy')">清空</button>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-num">OUTPUT</div>
+      <h3>文案<em>稿池</em></h3>
+      <div class="panel-sub">每条带角度说明,方便你挑、混、改。</div>
+      <div class="output empty" id="copy-output">
+        <div class="ico">§</div>
+        <div class="text">给我一句Brief,我给你一池备稿。</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 5. CAMPAIGN PLANNER ============ -->
+<section class="page" id="page-campaign">
+  <div class="page-head">
+    <div class="left">
+      <div class="page-eye">№.05 · Marketing Module</div>
+      <h2>Campaign <em>Planner</em></h2>
+    </div>
+    <div class="desc">From brief to executable plan in under 60 seconds.</div>
+  </div>
+
+  <div class="workspace">
+    <div class="panel">
+      <div class="panel-num">BRIEF</div>
+      <h3>Campaign <em>Brief</em></h3>
+      <div class="panel-sub">六个字段,完成一份可启动的营销方案。</div>
+
+      <label>Campaign 主题 / 项目名 <span class="req">*</span></label>
+      <input type="text" id="cmp-name" placeholder="如：春季新品上市 / 周年庆 / 出海首站">
+
+      <label>商业目标</label>
+      <textarea id="cmp-goal" placeholder="如：3个月内获取10000新注册;品类心智渗透提升15%。"></textarea>
+
+      <label>目标受众</label>
+      <input type="text" id="cmp-audience" placeholder="如：一线城市25-35岁中产女性">
+
+      <div class="row-3">
+        <div>
+          <label>预算量级</label>
+          <select id="cmp-budget">
+            <option>< 50万</option>
+            <option selected>50万 – 200万</option>
+            <option>200万 – 500万</option>
+            <option>500万 – 1000万</option>
+            <option>> 1000万</option>
+          </select>
+        </div>
+        <div>
+          <label>周期</label>
+          <select id="cmp-duration">
+            <option>2周</option>
+            <option>1个月</option>
+            <option selected>3个月</option>
+            <option>6个月</option>
+            <option>全年</option>
+          </select>
+        </div>
+        <div>
+          <label>市场</label>
+          <select id="cmp-market">
+            <option selected>中国</option>
+            <option>东南亚</option>
+            <option>北美</option>
+            <option>欧洲</option>
+            <option>全球</option>
+          </select>
+        </div>
+      </div>
+
+      <label>核心 Big Idea 或 主张（可选,留空让AI提）</label>
+      <textarea id="cmp-bigidea" placeholder="如果你已有主张,粘过来;如果没有,留空。"></textarea>
+
+      <label>限制 / 禁区（可选）</label>
+      <input type="text" id="cmp-cons" placeholder="如：不能做明星代言 / 法规对功效宣称的限制">
+
+      <div class="btn-row">
+        <button class="btn" onclick="runCampaign()">▸ 生成完整方案</button>
+        <button class="btn ghost" onclick="resetForm('campaign')">清空</button>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-num">PLAN</div>
+      <h3>Campaign <em>Plan</em></h3>
+      <div class="panel-sub">含目标 · 主张 · 渠道矩阵 · 预算分配 · 节奏 · KPI。</div>
+      <div class="output empty" id="cmp-output">
+        <div class="ico">§</div>
+        <div class="text">填写Brief,我交付一份可启动的Campaign方案。</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 6. PRODUCT DISCOVERY ============ -->
+<section class="page" id="page-discovery">
+  <div class="page-head">
+    <div class="left">
+      <div class="page-eye">№.06 · Product Module</div>
+      <h2>Product <em>Discovery</em></h2>
+    </div>
+    <div class="desc">Turn raw feedback into Jobs, pains, gains, and opportunity statements.</div>
+  </div>
+
+  <div class="workspace">
+    <div class="panel">
+      <div class="panel-num">INPUT</div>
+      <h3>原始<em>素材</em></h3>
+      <div class="panel-sub">访谈记录、用户反馈、客服记录、调研笔记 — 都可以。</div>
+
+      <label>分析模式</label>
+      <select id="disc-mode">
+        <option value="JTBD">Jobs-To-Be-Done 建模</option>
+        <option value="PainGain">用户痛点 / 收益梳理</option>
+        <option value="Persona">用户画像生成</option>
+        <option value="Insight">Insight 提炼 + 机会陈述</option>
+        <option value="Theme">访谈主题归类</option>
+      </select>
+
+      <label>研究主题或场景</label>
+      <input type="text" id="disc-topic" placeholder="如：远程协作中的会议焦虑 / 用户为何不续费">
+
+      <label>原始材料 <span class="req">*</span></label>
+      <textarea id="disc-raw" style="min-height:160px" placeholder="粘贴访谈摘录、用户反馈、调研记录…… 可以是片段,可以是混乱的笔记。"></textarea>
+
+      <label>样本量级（可选）</label>
+      <input type="text" id="disc-sample" placeholder="如：8位用户 / 50条评论 / 200份问卷">
+
+      <div class="btn-row">
+        <button class="btn" onclick="runDiscovery()">▸ 提炼Insight</button>
+        <button class="btn ghost" onclick="resetForm('discovery')">清空</button>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-num">OUTPUT</div>
+      <h3>Discovery <em>报告</em></h3>
+      <div class="panel-sub">结构化输出 — 可直接导入产品文档。</div>
+      <div class="output empty" id="disc-output">
+        <div class="ico">§</div>
+        <div class="text">给我一段原始材料,<br>我交付Jobs、Pain、Gain、Insight 与机会陈述。</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 7. PRD DRAFTER ============ -->
+<section class="page" id="page-prd">
+  <div class="page-head">
+    <div class="left">
+      <div class="page-eye">№.07 · Product Module</div>
+      <h2>PRD <em>Drafter</em></h2>
+    </div>
+    <div class="desc">From a sentence to a structured spec — context, goals, stories, acceptance, edge cases.</div>
+  </div>
+
+  <div class="workspace">
+    <div class="panel">
+      <div class="panel-num">SEED</div>
+      <h3>需求<em>种子</em></h3>
+      <div class="panel-sub">越粗糙越欢迎 — AI会反向追问应有的细节。</div>
+
+      <label>功能名称 <span class="req">*</span></label>
+      <input type="text" id="prd-name" placeholder="如：协作文档的版本对比功能">
+
+      <label>一句话需求</label>
+      <textarea id="prd-onelined" placeholder="如：用户希望能在两个文档版本之间快速看到差异并选择性回滚。"></textarea>
+
+      <label>所属产品 / 模块</label>
+      <input type="text" id="prd-product" placeholder="如：协作文档产品 / 编辑器模块">
+
+      <label>用户类型</label>
+      <input type="text" id="prd-user" placeholder="如：企业内容运营 / 重度文档用户">
+
+      <label>需要包含的章节</label>
+      <div class="chips" id="prd-sections">
+        <div class="chip active" data-v="背景">背景</div>
+        <div class="chip active" data-v="目标与非目标">目标 & 非目标</div>
+        <div class="chip active" data-v="用户故事">用户故事</div>
+        <div class="chip active" data-v="功能详述">功能详述</div>
+        <div class="chip active" data-v="验收标准">验收标准</div>
+        <div class="chip" data-v="数据指标">数据指标</div>
+        <div class="chip" data-v="边界情况">边界情况</div>
+        <div class="chip" data-v="风险">风险 & 依赖</div>
+        <div class="chip" data-v="发布计划">发布计划</div>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn" onclick="runPRD()">▸ 起草 PRD</button>
+        <button class="btn ghost" onclick="resetForm('prd')">清空</button>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-num">DRAFT</div>
+      <h3>PRD <em>初稿</em></h3>
+      <div class="panel-sub">直接拷入 Confluence / Notion 即可二次编辑。</div>
+      <div class="output empty" id="prd-output">
+        <div class="ico">§</div>
+        <div class="text">一句话需求 → 一份可评审的 PRD 初稿。</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 8. ROADMAP & PRIORITIZE ============ -->
+<section class="page" id="page-roadmap">
+  <div class="page-head">
+    <div class="left">
+      <div class="page-eye">№.08 · Product Module</div>
+      <h2>Roadmap &amp; <em>Prioritize</em></h2>
+    </div>
+    <div class="desc">Feed it your backlog. Get it ranked by a method you can defend.</div>
+  </div>
+
+  <div class="workspace">
+    <div class="panel">
+      <div class="panel-num">INPUT</div>
+      <h3>需求<em>列表</em></h3>
+      <div class="panel-sub">每行一个需求 / 项目。可附简单背景。</div>
+
+      <label>排序方法</label>
+      <select id="rm-method">
+        <option value="RICE">RICE（Reach × Impact × Confidence ÷ Effort）</option>
+        <option value="ICE">ICE（Impact × Confidence × Ease）</option>
+        <option value="MoSCoW">MoSCoW（Must/Should/Could/Won't）</option>
+        <option value="Kano">Kano 模型（基本/期望/兴奋/无差异）</option>
+        <option value="WSJF">WSJF（Cost of Delay ÷ Job Size）</option>
+        <option value="2x2">2×2 价值/成本矩阵</option>
+      </select>
+
+      <label>需求列表 <span class="req">*</span></label>
+      <textarea id="rm-items" style="min-height:160px" placeholder="每行一条,可附描述：&#10;- 评论功能 - 提升社交化&#10;- 数据看板导出 - 企业版高频呼声&#10;- AI摘要 - 差异化卖点&#10;- 移动端原生重写 - 长期债务"></textarea>
+
+      <label>战略目标 / 当下重心（可选）</label>
+      <textarea id="rm-goal" placeholder="如：本季度核心是企业级转化率提升,次要是新功能差异化"></textarea>
+
+      <label>团队规模 / 季度容量（可选）</label>
+      <input type="text" id="rm-cap" placeholder="如：4个工程师 + 1产品 + 1设计 / 单季度">
+
+      <div class="btn-row">
+        <button class="btn" onclick="runRoadmap()">▸ 排序与建议</button>
+        <button class="btn ghost" onclick="resetForm('roadmap')">清空</button>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-num">RANKED</div>
+      <h3>排序<em>结果</em></h3>
+      <div class="panel-sub">附打分逻辑、推荐组合、季度路线图建议。</div>
+      <div class="output empty" id="rm-output">
+        <div class="ico">§</div>
+        <div class="text">列出待办,选个方法 ——<br>得到一份可向老板辩护的优先级。</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 9. INSIGHT LAB ============ -->
+<section class="page" id="page-lab">
+  <div class="page-head">
+    <div class="left">
+      <div class="page-eye">№.09 · Cross-Functional</div>
+      <h2>Insight <em>Lab</em></h2>
+    </div>
+    <div class="desc">One question, three minds — Strategist · Marketer · Product Manager.</div>
+  </div>
+
+  <div class="panel" style="margin-bottom:18px">
+    <div class="panel-num">QUESTION</div>
+    <h3>把<em>问题</em>抛进来</h3>
+    <div class="panel-sub">同一个问题,由三种角色并行思考 — 你拿到的是对照而不是共识。</div>
+
+    <label>你的问题 / 议题 <span class="req">*</span></label>
+    <textarea id="lab-q" style="min-height:90px" placeholder="如：我们要不要把免费版的核心功能砍掉,只保留体验版?这件事对增长、品牌、产品分别意味着什么?"></textarea>
+
+    <div class="row-3">
+      <div>
+        <label>分析深度</label>
+        <select id="lab-depth">
+          <option value="简洁">简洁（5–8句/视角）</option>
+          <option value="标准" selected>标准（10–15句/视角）</option>
+          <option value="深度">深度（含案例与论证）</option>
+        </select>
+      </div>
+      <div>
+        <label>语言风格</label>
+        <select id="lab-style">
+          <option value="直接犀利">直接犀利</option>
+          <option value="结构化中性" selected>结构化中性</option>
+          <option value="苏格拉底式">苏格拉底式追问</option>
+        </select>
+      </div>
+      <div>
+        <label>结论形式</label>
+        <select id="lab-conc">
+          <option value="对照">仅对照</option>
+          <option value="对照+共识" selected>对照 + 三方共识</option>
+          <option value="对照+建议">对照 + 推荐答案</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn" onclick="runLab()">▸ 三视角并行</button>
+      <button class="btn ghost" onclick="resetForm('lab')">清空</button>
+    </div>
+  </div>
+
+  <div class="lab-cols">
+    <div class="lab-col">
+      <div class="lab-col-head">
+        <div class="lab-col-name">Strategist</div>
+        <div class="lab-col-tag">战略</div>
+      </div>
+      <div class="lab-col-out empty-lab" id="lab-strategist">
+        <div style="color:var(--muted);font-style:italic;font-family:'Fraunces',serif">从行业结构、长期价值、风险换取的视角……</div>
+      </div>
+    </div>
+    <div class="lab-col">
+      <div class="lab-col-head">
+        <div class="lab-col-name">Marketer</div>
+        <div class="lab-col-tag" style="background:var(--accent-2)">营销</div>
+      </div>
+      <div class="lab-col-out empty-lab" id="lab-marketer">
+        <div style="color:var(--muted);font-style:italic;font-family:'Fraunces',serif">从品牌、心智、转化路径与传播放大的视角……</div>
+      </div>
+    </div>
+    <div class="lab-col">
+      <div class="lab-col-head">
+        <div class="lab-col-name">Product Manager</div>
+        <div class="lab-col-tag" style="background:var(--gold)">产品</div>
+      </div>
+      <div class="lab-col-out empty-lab" id="lab-product">
+        <div style="color:var(--muted);font-style:italic;font-family:'Fraunces',serif">从用户价值、留存机制、可执行性的视角……</div>
+      </div>
+    </div>
+  </div>
+
+  <div id="lab-consensus-wrap" style="display:none;margin-top:18px">
+    <div class="panel">
+      <div class="panel-num">SYNTHESIS</div>
+      <h3>三方<em>共识</em></h3>
+      <div class="panel-sub">不是平均,是交集与张力的呈现。</div>
+      <div class="output" id="lab-consensus"></div>
+    </div>
+  </div>
+</section>
+
+<div class="footer">
+  <div>The Operator · Build №.001</div>
+  <div class="o">— Frameworks at the speed of thought —</div>
+  <div id="footer-time">—</div>
+</div>
+
+<div class="signature">
+  <div class="sig-rule"></div>
+  <div class="sig-content">
+    <div class="sig-left">
+      <div class="sig-mono">Concept · Design · Direction</div>
+      <div class="sig-name">郭兆龙 <span class="sig-en">Nathaniel GUO</span></div>
+    </div>
+    <div class="sig-mid">
+      <div class="sig-ornament">§ § §</div>
+    </div>
+    <div class="sig-right">
+      <div class="sig-mono">Copyright Notice</div>
+      <div class="sig-copy">© 2026 Nathaniel GUO. All rights reserved.</div>
+      <div class="sig-fine">Original idea, structure, and framework selection by 郭兆龙. Unauthorized commercial use prohibited.</div>
+    </div>
+  </div>
+</div>
+
+</main>
+
+<script>
+// ============ NAVIGATION ============
+function goPage(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('page-'+id).classList.add('active');
+  document.querySelector(`.tab[data-page="${id}"]`).classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+document.querySelectorAll('.tab').forEach(t=>{
+  t.addEventListener('click',()=>goPage(t.dataset.page));
+});
+
+// ============ TIME ============
+function updTime(){
+  const d = new Date();
+  const days = ['SUN','MON','TUE','WED','THU','FRI','SAT'];
+  const months = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
+  const s = `${days[d.getDay()]} · ${months[d.getMonth()]} ${String(d.getDate()).padStart(2,'0')} · ${d.getFullYear()} · ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;
+  document.getElementById('datetime').textContent = s;
+  document.getElementById('footer-time').textContent = s;
+}
+updTime();setInterval(updTime,30000);
+
+// ============ CHIPS ============
+document.querySelectorAll('.chip').forEach(c=>{
+  c.addEventListener('click',()=>c.classList.toggle('active'));
+});
+function getChips(containerId){
+  return Array.from(document.querySelectorAll(`#${containerId} .chip.active`)).map(c=>c.dataset.v);
+}
+
+// ============ FRAMEWORK TABS (Strategy) ============
+let currentFrame = 'STP';
+document.querySelectorAll('.frame-tab').forEach(t=>{
+  t.addEventListener('click',()=>{
+    document.querySelectorAll('.frame-tab').forEach(x=>x.classList.remove('active'));
+    t.classList.add('active');
+    currentFrame = t.dataset.frame;
+  });
+});
+
+// ============ MARKDOWN-LITE RENDERER ============
+function md(s){
+  if(!s) return '';
+  s = s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  // tables
+  s = s.replace(/((?:^\|.*\|.*\n)+)/gm, function(block){
+    const lines = block.trim().split('\n');
+    if(lines.length<2) return block;
+    const head = lines[0].split('|').slice(1,-1).map(x=>x.trim());
+    const sep = lines[1];
+    if(!/^\|[-:\s|]+\|$/.test(sep)) return block;
+    const rows = lines.slice(2).map(l=>l.split('|').slice(1,-1).map(x=>x.trim()));
+    let html='<table><thead><tr>'+head.map(h=>`<th>${h}</th>`).join('')+'</tr></thead><tbody>';
+    rows.forEach(r=>{html+='<tr>'+r.map(c=>`<td>${c}</td>`).join('')+'</tr>'});
+    html+='</tbody></table>';
+    return html;
+  });
+  // headers
+  s = s.replace(/^####\s+(.+)$/gm,'<h4>$1</h4>')
+       .replace(/^###\s+(.+)$/gm,'<h3>$1</h3>')
+       .replace(/^##\s+(.+)$/gm,'<h2>$1</h2>')
+       .replace(/^#\s+(.+)$/gm,'<h1>$1</h1>');
+  // blockquote
+  s = s.replace(/^>\s+(.+)$/gm,'<blockquote>$1</blockquote>');
+  // bold/italic/code
+  s = s.replace(/\*\*([^*]+)\*\*/g,'<strong>$1</strong>')
+       .replace(/(?<!\*)\*([^*\n]+)\*(?!\*)/g,'<em>$1</em>')
+       .replace(/`([^`]+)`/g,'<code>$1</code>');
+  // unordered lists
+  s = s.replace(/((?:^[-*]\s+.+\n?)+)/gm, function(b){
+    const items = b.trim().split('\n').map(l=>l.replace(/^[-*]\s+/,''));
+    return '<ul>'+items.map(i=>`<li>${i}</li>`).join('')+'</ul>';
+  });
+  // ordered lists
+  s = s.replace(/((?:^\d+\.\s+.+\n?)+)/gm, function(b){
+    const items = b.trim().split('\n').map(l=>l.replace(/^\d+\.\s+/,''));
+    return '<ol>'+items.map(i=>`<li>${i}</li>`).join('')+'</ol>';
+  });
+  // paragraphs
+  s = s.split(/\n\n+/).map(p=>{
+    if(/^<(h\d|ul|ol|table|blockquote)/.test(p.trim())) return p;
+    return p.trim()?`<p>${p.replace(/\n/g,'<br>')}</p>`:'';
+  }).join('\n');
+  return s;
+}
+
+// ============ COPY / REGEN ============
+function copyOut(targetId){
+  const el = document.getElementById(targetId);
+  const text = el.innerText;
+  navigator.clipboard.writeText(text).then(()=>{
+    const tip = document.createElement('div');
+    tip.textContent = '✓ 已复制';
+    tip.style.cssText = 'position:fixed;bottom:30px;right:30px;background:var(--ink);color:var(--paper);padding:10px 18px;font-family:JetBrains Mono;font-size:11px;letter-spacing:0.15em;text-transform:uppercase;border:1px solid var(--rule);z-index:200;animation:fadeIn 0.3s';
+    document.body.appendChild(tip);
+    setTimeout(()=>tip.remove(),1500);
+  });
+}
+
+// ============ MODEL CATALOG ============
+// 价格统一换算为 USD per 1M tokens (input/output);CNY按 7.2 汇率换算
+const MODELS = {
+  // ===== Anthropic =====
+  'claude-opus-4-7':    { provider:'anthropic', label:'Claude Opus 4.7',     api:'claude-opus-4-7',                 in:15.00,  out:75.00,  ctx:'1M',   note:'最强推理 / 最强agent' },
+  'claude-sonnet-4-6':  { provider:'anthropic', label:'Claude Sonnet 4.6',   api:'claude-sonnet-4-6',               in: 3.00,  out:15.00,  ctx:'1M',   note:'日常旗舰 / 高性价比' },
+  'claude-haiku-4-5':   { provider:'anthropic', label:'Claude Haiku 4.5',    api:'claude-haiku-4-5-20251001',       in: 1.00,  out: 5.00,  ctx:'200K', note:'快速轻量' },
+
+  // ===== OpenAI =====
+  'gpt-5.5':            { provider:'openai',    label:'GPT-5.5',             api:'gpt-5.5',                         in: 5.00,  out:30.00,  ctx:'1M',   note:'最新旗舰' },
+  'gpt-5.5-pro':        { provider:'openai',    label:'GPT-5.5 Pro',         api:'gpt-5.5-pro',                     in:30.00,  out:180.00, ctx:'1M',   note:'最高精度' },
+  'gpt-5.4':            { provider:'openai',    label:'GPT-5.4',             api:'gpt-5.4',                         in: 2.50,  out:15.00,  ctx:'1M',   note:'前代旗舰' },
+
+  // ===== Google =====
+  'gemini-3.1-pro':     { provider:'google',    label:'Gemini 3.1 Pro',      api:'gemini-3.1-pro-preview',          in: 2.00,  out:12.00,  ctx:'1M',   note:'最高性价比 / Frontier' },
+  'gemini-3-flash':     { provider:'google',    label:'Gemini 3 Flash',      api:'gemini-3-flash-preview',          in: 0.30,  out: 2.50,  ctx:'1M',   note:'高速低价' },
+
+  // ===== DeepSeek =====
+  'deepseek-v4-pro':    { provider:'deepseek',  label:'DeepSeek V4 Pro',     api:'deepseek-v4-pro',                 in: 0.44,  out: 0.87,  ctx:'128K', note:'深度推理 / 75%折扣中' },
+  'deepseek-v4-flash':  { provider:'deepseek',  label:'DeepSeek V4 Flash',   api:'deepseek-v4-flash',               in: 0.14,  out: 0.28,  ctx:'1M',   note:'极致性价比' },
+  'deepseek-chat':      { provider:'deepseek',  label:'DeepSeek Chat (V3.2)',api:'deepseek-chat',                   in: 0.28,  out: 0.42,  ctx:'128K', note:'稳定快速' },
+  'deepseek-reasoner':  { provider:'deepseek',  label:'DeepSeek Reasoner',   api:'deepseek-reasoner',               in: 0.28,  out: 0.42,  ctx:'128K', note:'思考链模式' },
+
+  // ===== 阿里 通义千问 =====
+  'qwen3-max':          { provider:'qwen',      label:'通义 Qwen3-Max',       api:'qwen3-max',                       in: 0.35,  out: 1.39,  ctx:'256K', note:'阿里旗舰 / 最强能力' },
+  'qwen3.5-plus':       { provider:'qwen',      label:'通义 Qwen3.5-Plus',    api:'qwen3.5-plus',                    in: 0.11,  out: 0.42,  ctx:'1M',   note:'开源SOTA / 媲美闭源' },
+  'qwen-plus':          { provider:'qwen',      label:'通义 Qwen-Plus',       api:'qwen-plus',                       in: 0.11,  out: 0.28,  ctx:'1M',   note:'均衡型主力' },
+  'qwen-flash':         { provider:'qwen',      label:'通义 Qwen-Flash',      api:'qwen-flash',                      in: 0.04,  out: 0.11,  ctx:'1M',   note:'最低价 / 高速' },
+
+  // ===== 月之暗面 Kimi =====
+  'kimi-k2.6':          { provider:'moonshot',  label:'Kimi K2.6',            api:'kimi-k2.6',                       in: 0.83,  out: 3.75,  ctx:'256K', note:'最新最智能 / Agent强' },
+  'kimi-k2.5':          { provider:'moonshot',  label:'Kimi K2.5',            api:'kimi-k2.5',                       in: 0.56,  out: 2.92,  ctx:'256K', note:'开源SOTA' },
+  'kimi-k2-thinking':   { provider:'moonshot',  label:'Kimi K2 Thinking',     api:'kimi-k2-thinking',                in: 0.56,  out: 2.92,  ctx:'256K', note:'深度思考链模式' },
+
+  // ===== 智谱 GLM =====
+  'glm-4.7':            { provider:'zhipu',     label:'智谱 GLM-4.7',          api:'glm-4.7',                         in: 0.28,  out: 1.11,  ctx:'128K', note:'编码与Agent增强' },
+  'glm-4.6':            { provider:'zhipu',     label:'智谱 GLM-4.6',          api:'glm-4.6',                         in: 0.21,  out: 0.83,  ctx:'200K', note:'通用旗舰' },
+  'glm-4.5-air':        { provider:'zhipu',     label:'智谱 GLM-4.5-Air',      api:'glm-4.5-air',                     in: 0.03,  out: 0.14,  ctx:'128K', note:'轻量极速' },
+
+  // ===== 字节 豆包 =====
+  'doubao-seed-2.0-pro':{ provider:'doubao',    label:'豆包 Doubao-Seed-2.0 Pro', api:'doubao-seed-2-0-pro',          in: 0.11,  out: 0.42,  ctx:'256K', note:'字节旗舰推理' },
+  'doubao-seed-1.6':    { provider:'doubao',    label:'豆包 Doubao-Seed-1.6',  api:'doubao-seed-1-6',                 in: 0.11,  out: 0.28,  ctx:'256K', note:'通用强化版' },
+
+  // ===== MiniMax =====
+  'minimax-m2.5':       { provider:'minimax',   label:'MiniMax M2.5',         api:'MiniMax-M2.5',                    in: 0.14,  out: 0.56,  ctx:'1M',   note:'极速Agent' },
+};
+
+let currentModel = 'claude-sonnet-4-6';
+
+// ===== Provider 配置(BaseURL + 调用风格) =====
+const PROVIDERS = {
+  anthropic: { name:'Anthropic',     baseUrl:'https://api.anthropic.com/v1/messages',                   format:'anthropic', keyHint:'sk-ant-...' },
+  openai:    { name:'OpenAI',        baseUrl:'https://api.openai.com/v1/chat/completions',              format:'openai',    keyHint:'sk-...' },
+  google:    { name:'Google',        baseUrl:'https://generativelanguage.googleapis.com/v1beta/models', format:'google',    keyHint:'AIza...' },
+  deepseek:  { name:'DeepSeek',      baseUrl:'https://api.deepseek.com/v1/chat/completions',            format:'openai',    keyHint:'sk-...' },
+  qwen:      { name:'阿里通义千问',  baseUrl:'https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions', format:'openai', keyHint:'sk-...' },
+  moonshot:  { name:'月之暗面 Kimi', baseUrl:'https://api.moonshot.cn/v1/chat/completions',             format:'openai',    keyHint:'sk-...' },
+  zhipu:     { name:'智谱 GLM',      baseUrl:'https://open.bigmodel.cn/api/paas/v4/chat/completions',   format:'openai',    keyHint:'xxx.xxx' },
+  doubao:    { name:'字节豆包',      baseUrl:'https://ark.cn-beijing.volces.com/api/v3/chat/completions',format:'openai',   keyHint:'xxx-xxx-...' },
+  minimax:   { name:'MiniMax',       baseUrl:'https://api.minimax.chat/v1/text/chatcompletion_v2',      format:'openai',    keyHint:'eyJ...' },
+};
+
+// ===== API Key Storage (localStorage,仅本地保存) =====
+function loadKeys(){
+  try{
+    const raw = localStorage.getItem('operator_apikeys');
+    return raw ? JSON.parse(raw) : {};
+  }catch(e){ return {}; }
+}
+function saveKeys(keys){
+  try{ localStorage.setItem('operator_apikeys', JSON.stringify(keys)); }catch(e){}
+}
+let apiKeys = loadKeys();
+function getKey(provider){
+  // 也支持自定义 baseUrl
+  const k = apiKeys[provider] || {};
+  return { key: k.key || '', baseUrl: k.baseUrl || PROVIDERS[provider].baseUrl };
+}
+function setKey(provider, key, baseUrl){
+  apiKeys[provider] = { key: key||'', baseUrl: baseUrl||'' };
+  saveKeys(apiKeys);
+}
+
+// Session usage state
+const session = {
+  calls: 0,
+  inputTokens: 0,
+  outputTokens: 0,
+  cost: 0
+};
+
+// ============ MODEL DOT COLOR MAP ============
+const PROVIDER_COLORS = {
+  anthropic:'#cc785c', openai:'#10a37f', google:'#4285f4',
+  deepseek:'#4d6bfe', qwen:'#615ced',  moonshot:'#000000',
+  zhipu:'#1a73e8',    doubao:'#ff5630',minimax:'#5b3df4'
+};
+const PROVIDER_DOC_URLS = {
+  anthropic:'https://console.anthropic.com/settings/keys',
+  openai:'https://platform.openai.com/api-keys',
+  google:'https://aistudio.google.com/app/apikey',
+  deepseek:'https://platform.deepseek.com/api_keys',
+  qwen:'https://bailian.console.aliyun.com/?apiKey=1',
+  moonshot:'https://platform.moonshot.cn/console/api-keys',
+  zhipu:'https://open.bigmodel.cn/usercenter/apikeys',
+  doubao:'https://console.volcengine.com/ark/region:ark+cn-beijing/apiKey',
+  minimax:'https://platform.minimaxi.com/user-center/basic-information/interface-key'
+};
+
+// ============ MODEL SELECTOR UI ============
+function toggleModelMenu(){
+  document.getElementById('ms-menu').classList.toggle('open');
+  refreshKeyBadges();
+}
+document.addEventListener('click', e=>{
+  const sel = document.getElementById('model-selector');
+  if(!sel.contains(e.target)) document.getElementById('ms-menu').classList.remove('open');
+});
+function setModel(id){
+  if(!MODELS[id]) return;
+  currentModel = id;
+  const m = MODELS[id];
+  document.getElementById('ms-name').textContent = m.label;
+  const dot = document.getElementById('ms-dot');
+  dot.style.background = PROVIDER_COLORS[m.provider] || '#888';
+  document.querySelectorAll('.ms-option').forEach(o=>{
+    o.classList.toggle('active', o.dataset.model===id);
+  });
+  document.getElementById('ms-menu').classList.remove('open');
+  const heroM = document.getElementById('hero-model');
+  if(heroM) heroM.textContent = m.label;
+  // live status
+  const live = document.getElementById('live-text');
+  const hasKey = apiKeys[m.provider] && apiKeys[m.provider].key;
+  if(live){
+    live.textContent = hasKey ? 'Ready' : '未配置 Key';
+    live.parentElement.querySelector('.dot').style.background = hasKey ? '#3a8552' : 'var(--accent)';
+  }
+}
+document.querySelectorAll('.ms-option').forEach(o=>{
+  o.addEventListener('click', ()=>setModel(o.dataset.model));
+});
+// init
+setTimeout(()=>{
+  setModel(currentModel);
+  refreshKeyBadges();
+  // 首次访问且无任何Key,自动弹出
+  if(Object.keys(apiKeys).length === 0){
+    setTimeout(()=>{
+      if(confirm('还未配置任何 API Key — 现在打开 API Keys 管理面板?\n(Keys 仅保存在你的浏览器本地)')) {
+        openKeyManager();
+      }
+    }, 800);
+  }
+},10);
+
+function refreshKeyBadges(){
+  document.querySelectorAll('.ms-key-badge').forEach(b=>{
+    const p = b.dataset.prov;
+    const has = apiKeys[p] && apiKeys[p].key;
+    b.textContent = has ? '●' : '○';
+    b.classList.toggle('ok', !!has);
+  });
+}
+
+// ============ KEY MANAGER MODAL ============
+function openKeyManager(){
+  document.getElementById('ms-menu').classList.remove('open');
+  const body = document.getElementById('key-modal-body');
+  body.innerHTML = '';
+  for(const [prov, info] of Object.entries(PROVIDERS)){
+    const stored = apiKeys[prov] || {};
+    const hasKey = !!stored.key;
+    // collect models for this provider
+    const provModels = Object.values(MODELS).filter(m=>m.provider===prov).map(m=>m.label).join(' · ');
+    const docUrl = PROVIDER_DOC_URLS[prov];
+    body.insertAdjacentHTML('beforeend', `
+      <div class="key-row">
+        <div class="key-row-head">
+          <div class="key-row-name">
+            <span class="key-row-dot ${hasKey?'ok':''}" style="background:${hasKey?'#3a8552':PROVIDER_COLORS[prov]}"></span>
+            ${info.name}
+          </div>
+          <div class="key-row-models">${provModels}</div>
+        </div>
+        <div class="key-row-body">
+          <div>
+            <label>API Key</label>
+            <input type="password" id="key-${prov}" value="${stored.key||''}" placeholder="${info.keyHint}" autocomplete="off">
+            <a href="${docUrl}" target="_blank" rel="noopener" class="docs">→ 申请/管理 Key</a>
+          </div>
+          <div>
+            <label>Base URL (可选,默认官方)</label>
+            <input type="text" id="url-${prov}" value="${stored.baseUrl||''}" placeholder="${info.baseUrl}">
+          </div>
+        </div>
+      </div>
+    `);
+  }
+  document.getElementById('key-modal').classList.add('open');
+}
+function closeKeyManager(e){
+  if(e && e.target.id !== 'key-modal') return;
+  document.getElementById('key-modal').classList.remove('open');
+}
+function saveAllKeys(){
+  for(const prov of Object.keys(PROVIDERS)){
+    const k = document.getElementById('key-'+prov)?.value.trim() || '';
+    const u = document.getElementById('url-'+prov)?.value.trim() || '';
+    if(k || u){
+      apiKeys[prov] = { key:k, baseUrl:u };
+    }else{
+      delete apiKeys[prov];
+    }
+  }
+  saveKeys(apiKeys);
+  refreshKeyBadges();
+  document.getElementById('key-modal').classList.remove('open');
+  toast('✓ API Keys 已保存到本地');
+}
+function clearAllKeys(){
+  if(!confirm('确定清空所有已保存的 API Key?')) return;
+  apiKeys = {};
+  saveKeys(apiKeys);
+  for(const prov of Object.keys(PROVIDERS)){
+    const el = document.getElementById('key-'+prov);
+    if(el) el.value = '';
+    const ue = document.getElementById('url-'+prov);
+    if(ue) ue.value = '';
+  }
+  refreshKeyBadges();
+  toast('已清空所有 Key');
+}
+function toast(msg, type='ok'){
+  const t = document.createElement('div');
+  t.textContent = msg;
+  t.style.cssText = `position:fixed;bottom:30px;right:30px;background:${type==='err'?'var(--accent)':'var(--ink)'};color:var(--paper);padding:12px 20px;font-family:JetBrains Mono;font-size:11px;letter-spacing:0.15em;text-transform:uppercase;border:1px solid var(--rule);z-index:1000;box-shadow:4px 4px 0 var(--rule)`;
+  document.body.appendChild(t);
+  setTimeout(()=>{t.style.transition='opacity 0.4s';t.style.opacity='0';setTimeout(()=>t.remove(),400);},2200);
+}
+
+// ============ USAGE TRACKING ============
+function fmtNum(n){
+  if(n<1000) return n.toString();
+  if(n<10000) return (n/1000).toFixed(2)+'K';
+  if(n<1000000) return (n/1000).toFixed(1)+'K';
+  return (n/1000000).toFixed(2)+'M';
+}
+function updateUsageDisplay(){
+  document.getElementById('us-calls').textContent = session.calls + ' calls';
+  document.getElementById('us-input').textContent = fmtNum(session.inputTokens) + ' tok';
+  document.getElementById('us-output').textContent = fmtNum(session.outputTokens) + ' tok';
+  document.getElementById('us-total').textContent = fmtNum(session.inputTokens + session.outputTokens) + ' tok';
+  document.getElementById('us-cost').textContent = '$' + session.cost.toFixed(4);
+}
+function recordUsage(inT, outT, modelId){
+  const m = MODELS[modelId];
+  if(!m) return null;
+  const cost = (inT * m.in + outT * m.out) / 1_000_000;
+  session.calls++;
+  session.inputTokens += inT;
+  session.outputTokens += outT;
+  session.cost += cost;
+  updateUsageDisplay();
+  return { input:inT, output:outT, total:inT+outT, cost, modelLabel:m.label };
+}
+function resetSession(){
+  if(session.calls===0) return;
+  if(!confirm('确定清空当前会话用量统计?')) return;
+  session.calls = 0;
+  session.inputTokens = 0;
+  session.outputTokens = 0;
+  session.cost = 0;
+  updateUsageDisplay();
+}
+
+// ============ UNIFIED MODEL CALL (multi-provider, BYO key) ============
+async function callModel(systemPrompt, userPrompt, max_tokens=2400){
+  const m = MODELS[currentModel];
+  if(!m) throw new Error('未知模型: '+currentModel);
+  const provider = m.provider;
+  const { key, baseUrl } = getKey(provider);
+  if(!key){
+    throw new Error(`未配置 ${PROVIDERS[provider].name} 的 API Key — 点击右上角"管理 API Keys"添加。`);
+  }
+
+  const fmt = PROVIDERS[provider].format;
+  let inT = 0, outT = 0, text = '';
+
+  if(fmt === 'anthropic'){
+    // Anthropic native /v1/messages
+    const r = await fetch(baseUrl, {
+      method:'POST',
+      headers:{
+        'Content-Type':'application/json',
+        'x-api-key': key,
+        'anthropic-version':'2023-06-01',
+        'anthropic-dangerous-direct-browser-access':'true'
+      },
+      body: JSON.stringify({
+        model: m.api,
+        max_tokens,
+        system: systemPrompt,
+        messages:[{ role:'user', content:userPrompt }]
+      })
+    });
+    if(!r.ok){ const e = await r.text(); throw new Error(`Anthropic ${r.status}: ${e.slice(0,200)}`); }
+    const data = await r.json();
+    text = (data.content||[]).filter(b=>b.type==='text').map(b=>b.text).join('\n');
+    inT = data.usage?.input_tokens || 0;
+    outT = data.usage?.output_tokens || 0;
+  }
+  else if(fmt === 'openai'){
+    // OpenAI-compatible (covers OpenAI, DeepSeek, Qwen, Moonshot, Zhipu, Doubao, MiniMax)
+    const r = await fetch(baseUrl, {
+      method:'POST',
+      headers:{
+        'Content-Type':'application/json',
+        'Authorization':'Bearer '+key
+      },
+      body: JSON.stringify({
+        model: m.api,
+        max_tokens,
+        messages:[
+          { role:'system', content:systemPrompt },
+          { role:'user', content:userPrompt }
+        ]
+      })
+    });
+    if(!r.ok){ const e = await r.text(); throw new Error(`${PROVIDERS[provider].name} ${r.status}: ${e.slice(0,200)}`); }
+    const data = await r.json();
+    text = data.choices?.[0]?.message?.content || '';
+    inT = data.usage?.prompt_tokens || data.usage?.input_tokens || 0;
+    outT = data.usage?.completion_tokens || data.usage?.output_tokens || 0;
+  }
+  else if(fmt === 'google'){
+    // Google Gemini API
+    const url = `${baseUrl}/${m.api}:generateContent?key=${encodeURIComponent(key)}`;
+    const r = await fetch(url, {
+      method:'POST',
+      headers:{ 'Content-Type':'application/json' },
+      body: JSON.stringify({
+        systemInstruction:{ parts:[{ text:systemPrompt }] },
+        contents:[{ role:'user', parts:[{ text:userPrompt }] }],
+        generationConfig:{ maxOutputTokens:max_tokens }
+      })
+    });
+    if(!r.ok){ const e = await r.text(); throw new Error(`Google ${r.status}: ${e.slice(0,200)}`); }
+    const data = await r.json();
+    text = data.candidates?.[0]?.content?.parts?.map(p=>p.text).join('\n') || '';
+    inT = data.usageMetadata?.promptTokenCount || 0;
+    outT = data.usageMetadata?.candidatesTokenCount || 0;
+  }
+
+  const meta = recordUsage(inT, outT, currentModel);
+  return { text, meta };
+}
+
+function showLoading(targetId, label='生成中'){
+  const el = document.getElementById(targetId);
+  el.classList.remove('empty');
+  el.innerHTML = `<div class="output-head"><span class="output-label">${MODELS[currentModel].label} · Thinking</span></div><div class="loading">${label}<span class="dots"></span></div>`;
+}
+function showError(targetId, msg){
+  const el = document.getElementById(targetId);
+  el.classList.remove('empty');
+  el.innerHTML = `<div class="err">⚠ ${msg}</div>`;
+}
+function showResult(targetId, content, meta){
+  const el = document.getElementById(targetId);
+  el.classList.remove('empty');
+  const usageBar = meta ? `
+    <div class="usage-bar">
+      <div class="ub-item"><span class="ub-lbl">MODEL</span><span class="ub-val">${meta.modelLabel}</span></div>
+      <div class="ub-item"><span class="ub-lbl">IN</span><span class="ub-val">${fmtNum(meta.input)}</span></div>
+      <div class="ub-item"><span class="ub-lbl">OUT</span><span class="ub-val">${fmtNum(meta.output)}</span></div>
+      <div class="ub-item"><span class="ub-lbl">TOTAL</span><span class="ub-val">${fmtNum(meta.total)}</span></div>
+      <div class="ub-item"><span class="ub-lbl">COST</span><span class="ub-val ub-cost">$${meta.cost.toFixed(4)}</span></div>
+    </div>` : '';
+  el.innerHTML = `
+    <div class="output-head">
+      <span class="output-label">${MODELS[currentModel].label} · Output</span>
+      <div class="output-actions">
+        <button class="output-mini-btn" onclick="copyOut('${targetId}')">Copy</button>
+      </div>
+    </div>
+    ${usageBar}
+    <div class="output-body">${md(content)}</div>
+  `;
+}
+
+function resetForm(prefix){
+  // simple reset — clear all input/textarea inside the active page
+  const page = document.querySelector('.page.active');
+  page.querySelectorAll('input[type="text"],input[type="number"],textarea').forEach(i=>i.value='');
+}
+
+// ============ QUICK FILL ============
+function quickFillStrategy(kind){
+  const map = {
+    saas: {name:'某项目协作 SaaS',industry:'B2B SaaS',issue:'付费转化停滞,免费用户/活跃用户增长但付费率徘徊在2%。是该砍免费版,还是重做付费墙?',context:'年度营收增速30%但付费率从3%降至2%;头部客户来自销售触达,自然流量转化弱。'},
+    consumer: {name:'某新国货护肤品牌',industry:'美妆个护',issue:'核心SKU定价区间在200–400元,被同价位欧美品牌挤压,要不要主动下探到100–200元?',context:'品牌成立3年,小红书阵地强,但天猫渠道一直未跑通;已有用户复购率约35%。'},
+    b2b: {name:'某企业级数据产品',industry:'B2B 数据分析',issue:'国内拿到头部客户,准备出海东南亚市场。是直接复制中国打法,还是从渠道/产品全部重做?',context:'国内做大客销售模式;团队没有海外经验;同类海外产品Looker/Mode竞争激烈。'}
+  };
+  const v = map[kind];
+  if(!v) return;
+  document.getElementById('strategy-name').value = v.name;
+  document.getElementById('strategy-industry').value = v.industry;
+  document.getElementById('strategy-issue').value = v.issue;
+  document.getElementById('strategy-context').value = v.context;
+}
+
+// ============ 1. STRATEGY ============
+async function runStrategy(){
+  const name = document.getElementById('strategy-name').value.trim();
+  const industry = document.getElementById('strategy-industry').value.trim();
+  const issue = document.getElementById('strategy-issue').value.trim();
+  const context = document.getElementById('strategy-context').value.trim();
+
+  if(!issue){ alert('请填写"当前核心问题"'); return; }
+
+  showLoading('strategy-output', `正在用 ${currentFrame} 框架分析`);
+
+  const frameDef = {
+    'STP': '请基于 STP 模型完成分析:1) Segmentation — 至少3种分群维度;2) Targeting — 推荐主攻/次攻/规避的细分;3) Positioning — 给出针对每个目标群体的定位声明 + 一句 One-liner。',
+    '4P': '请基于 4P 营销组合完成战略画布:Product / Price / Place / Promotion 四个维度,每个维度需给出具体主张、关键决策点、与竞品的差异。最后用一段 200字以内总结总体策略一致性。',
+    'Porter': '请基于 Porter 五力模型完成行业结构分析:1)行业内现有竞争 2)新进入者威胁 3)替代品威胁 4)供应商议价能力 5)买方议价能力。每力请用强/中/弱评级 + 论据 + 战略含义。最后给出整体吸引力评估与建议。',
+    'BCG': '请基于 BCG 矩阵完成产品组合分析:把可能的产品/业务线按"市场增长率 × 相对市场份额"分到 明星/现金牛/问号/瘦狗 四象限。每象限说明判断依据 + 资源配置策略。',
+    'Ansoff': '请基于 Ansoff 增长矩阵分析4条增长路径:1)市场渗透 2)市场开发 3)产品开发 4)多元化。每条路径给出具体可行的1-2个机会、所需资源、风险等级、推荐优先级。',
+    'SWOT': '请完成 SWOT + TOWS 交叉分析:1)分别列出 S/W/O/T 各3-5条;2)做 SO/ST/WO/WT 四象限交叉,每个象限给出1-2条战略建议。'
+  };
+
+  const sys = `你是一位资深商业战略顾问,擅长把模糊问题装入经典战略框架。要求:
+- 用简体中文输出
+- 结构清晰,使用 Markdown 标题、表格、列表
+- 论据具体不空洞,提出可执行的战略含义
+- 包含至少一个反直觉的洞见
+- 不使用"赋能/打造/极致/全方位"等空话`;
+
+  const user = `# 战略画布请求
+
+**框架**: ${currentFrame}
+
+**业务对象**: ${name||'未命名'}
+**行业**: ${industry||'未指定'}
+
+**核心问题/决策点**:
+${issue}
+
+${context?`**额外背景**:\n${context}`:''}
+
+**任务**:
+${frameDef[currentFrame]}
+
+请直接输出画布,无需重复问题。`;
+
+  try{
+    const r = await callModel(sys, user, 2800);
+    showResult('strategy-output', r.text, r.meta);
+  }catch(e){
+    showError('strategy-output', e.message);
+  }
+}
+
+// ============ 2. INTEL ============
+async function runIntel(){
+  const self = document.getElementById('intel-self').value.trim();
+  const rivals = document.getElementById('intel-rivals').value.trim();
+  const dims = getChips('intel-dims');
+  const form = document.getElementById('intel-form').value;
+  const extra = document.getElementById('intel-extra').value.trim();
+
+  if(!rivals){ alert('请列出主要竞争者'); return; }
+
+  showLoading('intel-output', `正在分析 ${rivals.split(/[,，\n]/).filter(x=>x.trim()).length} 个竞争者`);
+
+  const formPrompts = {
+    '对标表格': '请输出 Markdown 表格 — 第一列是分析维度,后续列分别是各竞品(以及自身)的表现。表格之后用一段总结点出关键差异 + 给"我方"的3条战术建议。',
+    'SWOT交叉': '从"我方"视角做 SWOT,以竞品为参照系。完成 S/W/O/T 罗列后,做 TOWS 交叉,给出 SO/ST/WO/WT 四个战略方向。',
+    '定位地图': '选取 2 个最有区分度的维度作为坐标轴,在文字中"画"出定位地图(用列表描述每个竞品所在象限),识别 1-2 个未被占据的"白空间"机会,并给出占据该空间所需的产品/品牌动作。',
+    '完整报告': '完整竞品报告:1)市场格局速写 2)逐家竞品速写卡(定位/优劣/动作) 3)对标矩阵表格 4)我方差距诊断 5)三条战略建议(短中长期)。'
+  };
+
+  const sys = `你是一位资深市场分析师与战略顾问。基于公开信息和用户提供的输入,给出有信息量、不空洞、可执行的竞品分析。允许在不确定时表达保守判断,而不是编造数据。中文输出,结构化,使用 Markdown。`;
+  const user = `# 竞品分析请求
+
+**我方**: ${self||'(未指定,以对手集合为视角)'}
+**主要竞品**: ${rivals}
+**关注维度**: ${dims.join('、')||'综合'}
+**输出形式**: ${form}
+${extra?`**已知信息**:\n${extra}`:''}
+
+**任务**:
+${formPrompts[form]}
+
+要求:
+- 不要编造具体数字,如必要请用"约/估计/区间"
+- 每个竞品至少给出1个差异化判断
+- 最终必须包含可执行建议`;
+
+  try{
+    const r = await callModel(sys, user, 2800);
+    showResult('intel-output', r.text, r.meta);
+  }catch(e){ showError('intel-output', e.message); }
+}
+
+// ============ 3. BRAND ============
+async function runBrand(){
+  const name = document.getElementById('brand-name').value.trim();
+  const what = document.getElementById('brand-what').value.trim();
+  const feel = document.getElementById('brand-feel').value.trim();
+  const outputs = getChips('brand-outputs');
+  const avoid = document.getElementById('brand-avoid').value.trim();
+
+  if(!name){ alert('请填写品牌/产品名'); return; }
+
+  showLoading('brand-output', '正在搭建品牌系统');
+
+  const sys = `你是一位资深品牌策略人,擅长把抽象的品牌"感觉"翻译成可写可设计可销售的语言系统。要求:
+- 中文输出
+- 拒绝陈词滥调("赋能/打造/极致/创新引领")
+- 每一节有清晰的标题与可被复用的内容
+- Tone of Voice 给具体例句对比 (Do/Don't)
+- 品牌金字塔从底层属性到顶层信念分层论述`;
+
+  const user = `# 品牌构建请求
+
+**品牌**: ${name}
+**核心业务**: ${what||'(未填)'}
+**期望感觉**: ${feel||'(未填,请基于业务推断)'}
+**避免感觉**: ${avoid||'无'}
+
+**需要输出**: ${outputs.join('、')}
+
+请按用户所选模块逐一输出,使用 Markdown 二级标题分节。每个模块都要具体到可被设计师/文案直接使用的程度。`;
+
+  try{
+    const r = await callModel(sys, user, 2800);
+    showResult('brand-output', r.text, r.meta);
+  }catch(e){ showError('brand-output', e.message); }
+}
+
+// ============ 4. COPY ============
+async function runCopy(){
+  const type = document.getElementById('copy-type').value;
+  const subject = document.getElementById('copy-subject').value.trim();
+  const benefit = document.getElementById('copy-benefit').value.trim();
+  const audience = document.getElementById('copy-audience').value.trim();
+  const tone = document.getElementById('copy-tone').value;
+  const count = document.getElementById('copy-count').value;
+  const avoid = document.getElementById('copy-avoid').value.trim();
+
+  if(!subject){ alert('请填写产品/主题'); return; }
+
+  showLoading('copy-output', `正在生成 ${count} 条文案`);
+
+  const sys = `你是一位资深文案/广告 Creative。要求:
+- 中文输出
+- 每条文案后用斜体标注【角度】(说明这条是从什么切角写的)
+- 不重复同质表达
+- 拒绝"赋能/打造/匠心/极致"等陈词
+- 不夸张、不空洞、不拍胸脯`;
+
+  const user = `# 文案 Brief
+
+**类型**: ${type}
+**产品/主题**: ${subject}
+**核心利益**: ${benefit||'(未填)'}
+**受众**: ${audience||'(未填)'}
+**调性**: ${tone}
+**版本数**: ${count}
+**禁忌**: ${avoid||'无'}
+
+请按以下格式输出:
+
+## ${type} · ${count}个版本
+
+### 1. [文案正文]
+*角度: xxx*
+
+### 2. [文案正文]
+*角度: yyy*
+
+…依次类推。
+
+最后用一节"## 推荐组合"给出"如果只能用3条该选哪3条 + 为什么"`;
+
+  try{
+    const r = await callModel(sys, user, 2400);
+    showResult('copy-output', r.text, r.meta);
+  }catch(e){ showError('copy-output', e.message); }
+}
+
+// ============ 5. CAMPAIGN ============
+async function runCampaign(){
+  const name = document.getElementById('cmp-name').value.trim();
+  const goal = document.getElementById('cmp-goal').value.trim();
+  const audience = document.getElementById('cmp-audience').value.trim();
+  const budget = document.getElementById('cmp-budget').value;
+  const duration = document.getElementById('cmp-duration').value;
+  const market = document.getElementById('cmp-market').value;
+  const bigidea = document.getElementById('cmp-bigidea').value.trim();
+  const cons = document.getElementById('cmp-cons').value.trim();
+
+  if(!name){ alert('请填写 Campaign 主题'); return; }
+
+  showLoading('cmp-output', '正在制定 Campaign 方案');
+
+  const sys = `你是一位资深 Campaign Strategist + Marketing Director。要求:
+- 中文输出
+- 输出可启动的方案,而非空洞建议
+- 渠道组合需考虑当前市场实际(中国市场就讲小红书/抖音/视频号/B站等;海外讲 Instagram/TikTok/YouTube/Reddit 等)
+- 预算分配给百分比 + 理由
+- KPI 需明确口径(如"引流到落地页 PV"而不是"流量提升")`;
+
+  const user = `# Campaign Brief
+
+**项目名**: ${name}
+**目标**: ${goal||'(未填)'}
+**受众**: ${audience||'(未填)'}
+**预算**: ${budget}
+**周期**: ${duration}
+**市场**: ${market}
+**已有 Big Idea**: ${bigidea||'无,请你提'}
+**限制**: ${cons||'无'}
+
+请输出完整方案,包含以下章节(用 ## 标题分节):
+
+1. **目标拆解** — 商业目标 → 营销目标 → 沟通目标
+2. **核心受众洞察** — 不是描述,而是动机/障碍/触媒
+3. **Big Idea 与核心主张** — 一句 Slogan + 30字主张说明${bigidea?'(请基于已有方向打磨)':'(请你提出)'}
+4. **创意表达方向** — 给出2-3个不同的 creative territory 供选
+5. **渠道矩阵** — Markdown 表格,列:渠道/角色/内容形式/预算占比/KPI
+6. **节奏排期** — 按周或按月给出阶段性动作
+7. **核心 KPI** — 3-5个,带口径
+8. **风险与备选** — 1-2个最大风险 + 应对`;
+
+  try{
+    const r = await callModel(sys, user, 3200);
+    showResult('cmp-output', r.text, r.meta);
+  }catch(e){ showError('cmp-output', e.message); }
+}
+
+// ============ 6. DISCOVERY ============
+async function runDiscovery(){
+  const mode = document.getElementById('disc-mode').value;
+  const topic = document.getElementById('disc-topic').value.trim();
+  const raw = document.getElementById('disc-raw').value.trim();
+  const sample = document.getElementById('disc-sample').value.trim();
+
+  if(!raw){ alert('请粘贴原始材料'); return; }
+
+  showLoading('disc-output', '正在提炼Insight');
+
+  const modePrompts = {
+    'JTBD': `请使用 Jobs-To-Be-Done 模型分析:
+- 列出 3-5 个核心 Job(用户在该场景下"雇佣"产品完成的任务,使用"当我...,我想要...,从而..."句式)
+- 每个 Job 注明 functional / emotional / social 类型
+- 找出最未被满足的1-2个Job,作为产品机会`,
+    'PainGain': `请输出:
+- **Pains** (用户痛点) - 至少5条,按严重程度排序
+- **Gains** (用户期望收益) - 至少5条,区分必需收益与惊喜收益
+- **Pain Killers** (现有解决方案的不足)
+- **Gain Creators** (产品机会建议)`,
+    'Persona': `请基于材料构建 1-2 个用户画像。每个画像包括:基本信息、生活/工作场景、核心动机、典型一天、决策路径、典型语录、不要(避免被怎样对待)。`,
+    'Insight': `请输出:
+- **Observations** - 5-7条客观观察
+- **Patterns** - 3-5条规律(去重提炼)
+- **Insights** - 2-3条非显而易见的洞察(应有"原来如此"的感觉)
+- **Opportunity Statements** - 用 HMW(How Might We) 句式,3-5条`,
+    'Theme': `请将材料按主题归类,每个主题:主题名 + 出现频次估计 + 代表性原话 + 隐含含义。`
+  };
+
+  const sys = `你是一位资深用户研究员/产品策略人,擅长从凌乱原始素材中提炼出有商业价值的洞察。要求:
+- 中文输出
+- 引用原始材料的具体表达作为论据(可加引号)
+- 拒绝套话,每个发现都要有"具体的样子"
+- 区分观察、规律、洞察 三个层次,不混为一谈`;
+
+  const user = `# 用户研究分析请求
+
+**主题/场景**: ${topic||'(未填)'}
+**样本**: ${sample||'(未填)'}
+**分析模式**: ${mode}
+
+**原始材料**:
+"""
+${raw}
+"""
+
+**任务**:
+${modePrompts[mode]}
+
+输出请用 Markdown 二级标题分节,适当使用列表与引用。`;
+
+  try{
+    const r = await callModel(sys, user, 2800);
+    showResult('disc-output', r.text, r.meta);
+  }catch(e){ showError('disc-output', e.message); }
+}
+
+// ============ 7. PRD ============
+async function runPRD(){
+  const name = document.getElementById('prd-name').value.trim();
+  const oneline = document.getElementById('prd-onelined').value.trim();
+  const product = document.getElementById('prd-product').value.trim();
+  const user = document.getElementById('prd-user').value.trim();
+  const sections = getChips('prd-sections');
+
+  if(!name){ alert('请填写功能名称'); return; }
+
+  showLoading('prd-output', '正在起草 PRD');
+
+  const sys = `你是一位资深产品经理,擅长把模糊需求转化为工程可读的 PRD。要求:
+- 中文输出
+- 用户故事用"作为...,我希望...,从而..."标准句式
+- 验收标准用 Given/When/Then 格式
+- 边界情况要枚举具体场景而非泛泛说"考虑异常"
+- 留出待澄清问题清单(由PM接力解答)`;
+
+  const userPrompt = `# PRD 起草请求
+
+**功能**: ${name}
+**一句话需求**: ${oneline||'(未填)'}
+**所属产品**: ${product||'未指定'}
+**用户**: ${user||'未指定'}
+
+**需要包含的章节**: ${sections.join('、')}
+
+请按上述章节逐一输出,Markdown 二级标题分节。
+无依据不编数字,但需要给出"测量什么指标"的建议。
+最后加一节"## 待澄清问题",列出至少3个PM需要进一步确认的问题。`;
+
+  try{
+    const r = await callModel(sys, userPrompt, 3000);
+    showResult('prd-output', r.text, r.meta);
+  }catch(e){ showError('prd-output', e.message); }
+}
+
+// ============ 8. ROADMAP ============
+async function runRoadmap(){
+  const method = document.getElementById('rm-method').value;
+  const items = document.getElementById('rm-items').value.trim();
+  const goal = document.getElementById('rm-goal').value.trim();
+  const cap = document.getElementById('rm-cap').value.trim();
+
+  if(!items){ alert('请列出待排序需求'); return; }
+
+  showLoading('rm-output', `正在用 ${method} 方法排序`);
+
+  const methodDef = {
+    'RICE': 'RICE = (Reach × Impact × Confidence) / Effort。请对每个需求给出 R(月触达人数估计)、I(0.25/0.5/1/2/3 五档)、C(0–100%)、E(人月) 估值与RICE分数,排序输出。',
+    'ICE': 'ICE = Impact × Confidence × Ease,每项 1-10 评分,给出 ICE 分数排序。',
+    'MoSCoW': '将每个需求归入 Must / Should / Could / Won\'t 之一,并说明判断理由。最后给出 Must 集合的执行节奏建议。',
+    'Kano': '将每个需求归入 Must-have(基本) / Performance(期望) / Delighter(兴奋) / Indifferent(无差异) 之一,基于此给出"先做什么"的建议。',
+    'WSJF': 'WSJF = Cost of Delay / Job Size。Cost of Delay = 用户业务价值 + 时效紧迫 + 风险减少/机会捕捉。每项打分后给出 WSJF 排序。',
+    '2x2': '将每个需求标在 2x2(纵轴:战略价值高/低 × 横轴:实施成本高/低)矩阵中,给出推荐策略:Quick Wins(高价值低成本) → 立即做;Major Projects → 规划做;Fill-ins → 顺手做;Money Pits → 暂缓。'
+  };
+
+  const sys = `你是一位资深产品经理与项目经理,擅长基于多种排序方法做需求优先级决策。要求:
+- 中文输出
+- 评分要给出明确依据,不能只给数字
+- 最后必须给出"如果团队容量是X,建议本季度做哪几个 + 不做哪几个 + 为什么"
+- 用 Markdown 表格呈现排序结果`;
+
+  const user = `# 需求排序请求
+
+**排序方法**: ${method}
+**战略目标**: ${goal||'(未填)'}
+**团队容量**: ${cap||'(未填)'}
+
+**需求列表**:
+${items}
+
+**任务**:
+${methodDef[method]}
+
+输出结构:
+1. ## 评分表(Markdown 表格)
+2. ## 排序结果(从高到低)
+3. ## 季度建议(基于容量的取舍)
+4. ## 风险提示(被低估或被高估的项)`;
+
+  try{
+    const r = await callModel(sys, user, 2800);
+    showResult('rm-output', r.text, r.meta);
+  }catch(e){ showError('rm-output', e.message); }
+}
+
+// ============ 9. INSIGHT LAB (3 parallel) ============
+async function runLab(){
+  const q = document.getElementById('lab-q').value.trim();
+  const depth = document.getElementById('lab-depth').value;
+  const style = document.getElementById('lab-style').value;
+  const conc = document.getElementById('lab-conc').value;
+
+  if(!q){ alert('请填写问题'); return; }
+
+  document.getElementById('lab-strategist').innerHTML = '<div class="loading">Strategist 思考中<span class="dots"></span></div>';
+  document.getElementById('lab-marketer').innerHTML = '<div class="loading">Marketer 思考中<span class="dots"></span></div>';
+  document.getElementById('lab-product').innerHTML = '<div class="loading">PM 思考中<span class="dots"></span></div>';
+  document.getElementById('lab-consensus-wrap').style.display = 'none';
+
+  const roles = [
+    {
+      id:'lab-strategist',
+      sys:`你扮演一位 Senior Strategy Consultant,从行业结构、长期价值、资本回报、风险与机会成本的角度思考问题。语言${style}。`,
+      user:`问题:${q}\n\n请用${depth}的篇幅给出战略视角的分析。结构:1)问题的真正核心是什么 2)关键变量与不确定性 3)2-3个可选路径的取舍 4)你的判断与原因。`
+    },
+    {
+      id:'lab-marketer',
+      sys:`你扮演一位 Senior Marketing Director,从品牌资产、用户心智、获客转化、传播放大、单位经济模型的角度思考问题。语言${style}。`,
+      user:`问题:${q}\n\n请用${depth}的篇幅给出营销视角的分析。结构:1)用户心智会如何感知此事 2)对品牌/获客/留存分别的影响 3)2-3个营销策略选项 4)推荐与原因。`
+    },
+    {
+      id:'lab-product',
+      sys:`你扮演一位 Senior Product Manager,从用户价值、产品体验、留存机制、可执行性、技术成本的角度思考问题。语言${style}。`,
+      user:`问题:${q}\n\n请用${depth}的篇幅给出产品视角的分析。结构:1)谁的什么 Job 会被影响 2)产品/体验层面的得失 3)2-3个产品选项 4)推荐与原因。`
+    }
+  ];
+
+  const promises = roles.map(r=>
+    callModel(r.sys, r.user, 1400)
+      .then(({text, meta})=>{
+        const usageBar = meta ? `<div class="usage-bar mini"><span class="ub-mini">↓ ${fmtNum(meta.input)} ↑ ${fmtNum(meta.output)} · $${meta.cost.toFixed(4)}</span></div>` : '';
+        document.getElementById(r.id).innerHTML = usageBar + md(text);
+        return {role:r.id, text};
+      })
+      .catch(e=>{
+        document.getElementById(r.id).innerHTML = `<div class="err">⚠ ${e.message}</div>`;
+        return {role:r.id, text:''};
+      })
+  );
+
+  const results = await Promise.all(promises);
+
+  // synthesis
+  if(conc !== '对照'){
+    document.getElementById('lab-consensus-wrap').style.display = 'block';
+    const consensusEl = document.getElementById('lab-consensus');
+    consensusEl.innerHTML = '<div class="loading">综合三方观点中<span class="dots"></span></div>';
+
+    const sysC = `你是一位高阶 Generalist,擅长综合战略、营销、产品三方视角的分析。中文输出,Markdown 格式。`;
+    const userC = `用户问题:${q}
+
+战略视角:
+${results[0].text}
+
+营销视角:
+${results[1].text}
+
+产品视角:
+${results[2].text}
+
+请给出:
+1. **三方共识** — 三方看法重叠的部分
+2. **三方张力** — 三方观点冲突的地方,以及冲突的本质
+${conc==='对照+建议'?'3. **推荐答案** — 综合考量后的最终建议(直接给立场)':''}`;
+
+    try{
+      const cR = await callModel(sysC, userC, 1600);
+      const usageBar = cR.meta ? `
+        <div class="usage-bar">
+          <div class="ub-item"><span class="ub-lbl">MODEL</span><span class="ub-val">${cR.meta.modelLabel}</span></div>
+          <div class="ub-item"><span class="ub-lbl">IN</span><span class="ub-val">${fmtNum(cR.meta.input)}</span></div>
+          <div class="ub-item"><span class="ub-lbl">OUT</span><span class="ub-val">${fmtNum(cR.meta.output)}</span></div>
+          <div class="ub-item"><span class="ub-lbl">TOTAL</span><span class="ub-val">${fmtNum(cR.meta.total)}</span></div>
+          <div class="ub-item"><span class="ub-lbl">COST</span><span class="ub-val ub-cost">$${cR.meta.cost.toFixed(4)}</span></div>
+        </div>` : '';
+      consensusEl.innerHTML = `<div class="output-head"><span class="output-label">Synthesis · 综合</span><div class="output-actions"><button class="output-mini-btn" onclick="copyOut('lab-consensus')">Copy</button></div></div>${usageBar}<div>${md(cR.text)}</div>`;
+    }catch(e){
+      consensusEl.innerHTML = `<div class="err">综合失败: ${e.message}</div>`;
+    }
+  }
+}
+
+// ============ Keyboard shortcut ============
+document.addEventListener('keydown', e=>{
+  if((e.metaKey||e.ctrlKey) && e.key==='Enter'){
+    const active = document.querySelector('.page.active');
+    const btn = active.querySelector('.btn:not(.ghost)');
+    if(btn) btn.click();
+  }
+});
+</script>
+
+</body>
+</html>
